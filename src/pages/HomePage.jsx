@@ -3,14 +3,16 @@
     import { Link } from 'react-router-dom';
     import { Button } from '@/components/ui/button.jsx';
     import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx';
-    import { FilePlus2, History, BarChart3, Zap, User, Activity } from 'lucide-react';
+    import { FilePlus2, History, BarChart3, Zap, User, Activity, Loader2, AlertTriangle, FileText, CalendarDays, PawPrint, Microscope } from 'lucide-react';
     import { motion } from 'framer-motion';
     import { useAuth } from '@/contexts/AuthContext.jsx';
+    import { useRecentAnalysis } from '@/hooks/useRecentAnalysis.jsx';
     import { useTranslation } from '@/contexts/TranslationContext.jsx';
 
     const HomePage = () => {
       const { user } = useAuth();
       const { t } = useTranslation();
+      const { recentAnalysis, loading, error, fetchRecentAnalysis } = useRecentAnalysis();
 
       const cardVariants = {
         hidden: { opacity: 0, y: 20 },
@@ -101,10 +103,61 @@
               </div>
               <CardDescription className="text-slate-600 dark:text-slate-400">{t('homeRecentActivityDescription')}</CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-slate-500 dark:text-slate-400">
-                {t('homeRecentActivityPlaceholder')}
-              </p>
+            <CardContent className="space-y-4">
+              {loading && (
+                <div className="flex justify-center items-center py-6">
+                  <Loader2 className="animate-spin h-10 w-10 text-primary" />
+                </div>
+              )}
+              {error && (
+                <div className="flex flex-col items-center text-center py-6">
+                  <AlertTriangle className="h-10 w-10 text-red-500 mb-3" />
+                  <p className="text-red-500 font-medium">{t('errorFetchingRecentAnalysis')}</p>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm">{error.message}</p>
+                  <Button variant="outline" size="sm" onClick={fetchRecentAnalysis} className="mt-4">
+                    {t('tryAgain')}
+                  </Button>
+                </div>
+              )}
+              {!loading && !error && !recentAnalysis && (
+                <div className="flex flex-col items-center text-center py-6">
+                  <FileText className="h-10 w-10 text-slate-400 mb-3" />
+                  <p className="text-slate-500 dark:text-slate-400 font-medium">{t('noRecentAnalysisFound')}</p>
+                  <p className="text-sm text-slate-400 dark:text-slate-500">{t('startNewAnalysisPrompt')}</p>
+                  <Button asChild className="mt-4">
+                    <Link to="/new-analysis">{t('newAnalysisButton')}</Link>
+                  </Button>
+                </div>
+              )}
+              {!loading && !error && recentAnalysis && (
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3">
+                    <PawPrint className="h-5 w-5 text-primary flex-shrink-0" />
+                    <span className="text-slate-700 dark:text-slate-300">
+                      {t('patientNameLabel')}: <strong className="font-semibold">{recentAnalysis.patient_name || t('notAvailable')}</strong>
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Microscope className="h-5 w-5 text-sky-500 flex-shrink-0" />
+                    <span className="text-slate-700 dark:text-slate-300">
+                      {t('analysisTypeLabel')}: <strong className="font-semibold">{recentAnalysis.analysis_type || t('notAvailable')}</strong>
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <CalendarDays className="h-5 w-5 text-amber-500 flex-shrink-0" />
+                    <span className="text-slate-700 dark:text-slate-300">
+                      {t('dateLabel')}: <strong className="font-semibold">{new Date(recentAnalysis.upload_date).toLocaleDateString()}</strong>
+                    </span>
+                  </div>
+                  <div className="pt-3">
+                    <Button asChild className="w-full md:w-auto shadow-md hover:shadow-lg transition-shadow">
+                      <Link to={`/history/${recentAnalysis.id}`}>
+                        <FileText className="mr-2 h-4 w-4" /> {t('viewReportButton')}
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
 
