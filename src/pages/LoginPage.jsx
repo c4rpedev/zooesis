@@ -5,7 +5,7 @@
     import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx';
     import { Input } from '@/components/ui/input.jsx';
     import { Label } from '@/components/ui/label.jsx';
-    import { LogIn, UserPlus, Mail, Key, Loader2 } from 'lucide-react';
+    import { LogIn, UserPlus, Mail, Key, Loader2, Eye, EyeOff } from 'lucide-react';
     import { motion } from 'framer-motion';
     import { useAuth } from '@/contexts/AuthContext.jsx';
     import { useToast } from '@/components/ui/use-toast.jsx';
@@ -19,8 +19,11 @@
 
       const [email, setEmail] = useState('');
       const [password, setPassword] = useState('');
+      const [showPassword, setShowPassword] = useState(false);
       const [loading, setLoading] = useState(false);
       const [error, setError] = useState('');
+
+      const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
       const handleLogin = async (e) => {
         e.preventDefault();
@@ -110,11 +113,27 @@
                   <Label htmlFor="password" className="flex items-center text-slate-700 dark:text-slate-200">
                     <Key className="mr-2 h-5 w-5 text-primary" /> {t('password')}
                   </Label>
-                  <Input 
-                    id="password" type="password" placeholder="••••••••" required 
-                    value={password} onChange={(e) => setPassword(e.target.value)}
-                    className="h-12 text-base focus:ring-2 focus:ring-primary transition-all" 
-                  />
+                  <div className="relative">
+                    <Input 
+                      id="password" 
+                      type={showPassword ? "text" : "password"} 
+                      placeholder="••••••••" 
+                      required 
+                      value={password} 
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="h-12 text-base focus:ring-2 focus:ring-primary transition-all pr-10" 
+                    />
+                    <Button 
+                      type="button" 
+                      variant="ghost" 
+                      size="icon" 
+                      className="absolute inset-y-0 right-0 h-full px-3 text-slate-500 hover:text-primary"
+                      onClick={togglePasswordVisibility}
+                      aria-label={showPassword ? t('hidePassword') : t('showPassword')}
+                    >
+                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </Button>
+                  </div>
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
