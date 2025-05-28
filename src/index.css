@@ -1,0 +1,128 @@
+
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+
+    @layer base {
+      :root {
+        --background: 0 0% 100%;
+        --foreground: 258 10% 20%; 
+        --card: 0 0% 100%;
+        --card-foreground: 258 10% 20%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 258 10% 20%;
+        --primary: 258 65% 60%; 
+        --primary-foreground: 0 0% 100%; 
+        
+        --secondary: 258 30% 96%; 
+        --secondary-foreground: 258 65% 40%; 
+        
+        --muted: 258 20% 93%;
+        --muted-foreground: 258 10% 45%;
+        
+        --accent: 258 50% 90%; 
+        --accent-foreground: 258 65% 30%;
+        
+        --destructive: 0 72.2% 50.6%;
+        --destructive-foreground: 0 0% 100%;
+        
+        --border: 258 20% 88%;
+        --input: 258 20% 88%;
+        --ring: 258 65% 60%; 
+        --radius: 0.75rem;
+      }
+
+      .dark {
+        --background: 258 15% 10%; 
+        --foreground: 258 15% 90%; 
+        --card: 258 15% 15%; 
+        --card-foreground: 258 15% 90%;
+        --popover: 258 15% 12%;
+        --popover-foreground: 258 15% 90%;
+
+        --primary: 258 70% 65%; 
+        --primary-foreground: 0 0% 100%;
+
+        --secondary: 258 20% 25%; 
+        --secondary-foreground: 258 20% 85%;
+        
+        --muted: 258 15% 20%;
+        --muted-foreground: 258 10% 60%;
+        
+        --accent: 258 30% 35%; 
+        --accent-foreground: 258 15% 90%;
+        
+        --destructive: 0 62.8% 40.6%; 
+        --destructive-foreground: 0 0% 100%;
+        
+        --border: 258 15% 25%;
+        --input: 258 15% 25%;
+        --ring: 258 70% 65%; 
+      }
+    }
+
+    @layer base {
+      * {
+        @apply border-border;
+      }
+      body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "rlig" 1, "calt" 1;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      @apply bg-secondary;
+      border-radius: var(--radius);
+    }
+    ::-webkit-scrollbar-thumb {
+      @apply bg-primary/70;
+      border-radius: var(--radius);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      @apply bg-primary;
+    }
+
+    .print-report-styles {
+      /* Add any print-specific styles here */
+    }
+    
+    @media print {
+      body {
+        -webkit-print-color-adjust: exact; /* Chrome, Safari */
+        color-adjust: exact; /* Firefox, Edge */
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-shadow-none {
+        box-shadow: none !important;
+      }
+      .print-text-black {
+        color: black !important;
+      }
+       .print-text-slate-500 {
+        color: #64748b !important; /* text-slate-500 */
+      }
+      /* Ensure backgrounds are printed if needed, though generally avoided for print */
+      .print-bg-white {
+        background-color: white !important;
+      }
+      .print-border-slate-200 {
+         border-color: #e2e8f0 !important; /* border-slate-200 */
+      }
+      .print-text-blue-500 { color: #3b82f6 !important; }
+      .print-text-green-500 { color: #22c55e !important; }
+      .print-text-purple-500 { color: #a855f7 !important; }
+      .print-text-orange-500 { color: #f97316 !important; }
+      .print-text-teal-500 { color: #14b8a6 !important; }
+      .print-text-red-500 { color: #ef4444 !important; }
+      .print-text-red-700 { color: #b91c1c !important; }
+      .print-text-indigo-500 { color: #6366f1 !important; }
+      .print-text-pink-500 { color: #ec4899 !important; }
+    }
+  

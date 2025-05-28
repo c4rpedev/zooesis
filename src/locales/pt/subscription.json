@@ -1,0 +1,32 @@
+
+    {
+      "subscriptionPageTitle": "Potencialize Sua Clínica",
+      "subscriptionPageSubtitle": "Escolha o plano Zooesis perfeito para otimizar a análise de laudos laboratoriais e aprimorar o cuidado ao paciente. Preços simples e transparentes.",
+      "planFreeName": "Plano Grátis",
+      "planPerMonth": "/ mês",
+      "planFreeDescription": "Recém começando",
+      "planFeatureBasicAccess": "Acesso a análises básicas",
+      "planFeature10Analyses": "10 análises grátis",
+      "planFreeCTA": "Comece Hoje",
+      "planPopularName": "Plano Popular",
+      "planPopularDescription": "Obtenha o melhor valor com este plano",
+      "planFeatureSpecializedAccess": "Acesso a análises especializadas",
+      "planFeature90Analyses": "90 análises/mês",
+      "planPopularCTA": "Escolher Popular",
+      "planProfessionalName": "Plano Profissional",
+      "planProfessionalDescription": "Escolha este plano para análises ilimitadas",
+      "planFeatureUnlimitedAnalyses": "Análises ilimitadas",
+      "planProfessionalCTA": "Escolher Profissional",
+      "mostPopularPlan": "Mais Popular",
+      "currentPlan": "Plano Atual",
+      "secureReliableTitle": "Seguro e Confiável",
+      "secureReliableDescription": "Todos os pagamentos são processados com segurança. Seus dados são protegidos com criptografia padrão da indústria. Cancele ou altere seu plano a qualquer momento.",
+      "faqLink": "Tem perguntas? Leia nosso FAQ",
+      "planSelectedTitle": "Plano Selecionado",
+      "planSelectedDescriptionPrefix": "Você selecionou o",
+      "paymentIntegrationComingSoon": "A integração de pagamentos será implementada em breve.",
+      "analysisLimitReachedTitle": "Limite de Análises Atingido",
+      "analysisLimitReachedDescription": "Você atingiu o limite de 10 análises para o Plano Gratuito. Por favor, atualize seu plano para continuar.",
+      "upgradePlan": "Atualizar Plano"
+    }
+  

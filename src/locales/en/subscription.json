@@ -1,0 +1,32 @@
+
+    {
+      "subscriptionPageTitle": "Power Up Your Practice",
+      "subscriptionPageSubtitle": "Choose the perfect Zooesis plan to streamline your lab report analysis and enhance patient care. Simple, transparent pricing.",
+      "planFreeName": "Free Plan",
+      "planPerMonth": "/ month",
+      "planFreeDescription": "Just starting out",
+      "planFeatureBasicAccess": "Access to basic analyses",
+      "planFeature10Analyses": "10 free analyses",
+      "planFreeCTA": "Start Today",
+      "planPopularName": "Popular Plan",
+      "planPopularDescription": "Get the best value with this plan",
+      "planFeatureSpecializedAccess": "Access to specialized analyses",
+      "planFeature90Analyses": "90 analyses/month",
+      "planPopularCTA": "Choose Popular",
+      "planProfessionalName": "Professional Plan",
+      "planProfessionalDescription": "Choose this plan for unlimited analyses",
+      "planFeatureUnlimitedAnalyses": "Unlimited analyses",
+      "planProfessionalCTA": "Choose Professional",
+      "mostPopularPlan": "Most Popular",
+      "currentPlan": "Current Plan",
+      "secureReliableTitle": "Secure & Reliable",
+      "secureReliableDescription": "All payments are processed securely. Your data is protected with industry-standard encryption. Cancel or change your plan anytime.",
+      "faqLink": "Have questions? Read our FAQ",
+      "planSelectedTitle": "Plan Selected",
+      "planSelectedDescriptionPrefix": "You've selected the",
+      "paymentIntegrationComingSoon": "Payment processing will be integrated soon.",
+      "analysisLimitReachedTitle": "Analysis Limit Reached",
+      "analysisLimitReachedDescription": "You have reached the 10 analyses limit for the Free Plan. Please upgrade to continue.",
+      "upgradePlan": "Upgrade Plan"
+    }
+  
