@@ -60,6 +60,16 @@
       "signInHere": "Entre aqui",
       "signIn": "Entrar",
       "redirectToDashboard": "Redirecionando para o painel...",
-      "comingSoon": "Em breve"
+      "comingSoon": "Em breve",
+      "errorFetchingRecentAnalysis": "Erro ao Carregar Análise Recente",
+      "tryAgain": "Tentar Novamente",
+      "noRecentAnalysisFound": "Nenhuma Análise Recente Encontrada",
+      "startNewAnalysisPrompt": "Comece realizando sua primeira análise.",
+      "patientNameLabel": "Nome do Paciente",
+      "analysisTypeLabel": "Tipo de Análise",
+      "dateLabel": "Data",
+      "viewReportButton": "Ver Relatório",
+      "homeRecentActivityTitle": "Atividade Recente",
+      "homeRecentActivityDescription": "Sua última análise aparecerá aqui."
     }
   

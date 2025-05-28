@@ -60,6 +60,16 @@
       "signInHere": "Sign in here",
       "signIn": "Sign In",
       "redirectToDashboard": "Redirecting to dashboard...",
-      "comingSoon": "Coming soon"
+      "comingSoon": "Coming soon",
+      "errorFetchingRecentAnalysis": "Error Fetching Recent Analysis",
+      "tryAgain": "Try Again",
+      "noRecentAnalysisFound": "No Recent Analyses Found",
+      "startNewAnalysisPrompt": "Get started by performing your first analysis.",
+      "patientNameLabel": "Patient Name",
+      "analysisTypeLabel": "Analysis Type",
+      "dateLabel": "Date",
+      "viewReportButton": "View Report",
+      "homeRecentActivityTitle": "Recent Activity",
+      "homeRecentActivityDescription": "Your latest analysis will appear here."
     }
   
