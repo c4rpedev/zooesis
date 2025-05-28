@@ -1,0 +1,1 @@
+const a="Admin Dashboard",n="User Management",m="Prompt Management",t="Analytics",e={adminDashboard:a,adminUserManagement:n,adminPromptManagement:m,adminAnalytics:t};export{t as adminAnalytics,a as adminDashboard,m as adminPromptManagement,n as adminUserManagement,e as default};

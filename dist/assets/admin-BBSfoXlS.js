@@ -1,0 +1,1 @@
+const a="Panel de Admin",n="Gestión de Usuarios",t="Gestión de Prompts",e="Analíticas",s={adminDashboard:a,adminUserManagement:n,adminPromptManagement:t,adminAnalytics:e};export{e as adminAnalytics,a as adminDashboard,t as adminPromptManagement,n as adminUserManagement,s as default};
