@@ -1,92 +1,94 @@
+import { useState, useEffect, useCallback } from 'react';
+import { supabase } from '@/lib/supabaseClient.jsx';
+// Importa aquí cualquier otra dependencia necesaria para las acciones
+// import { someOtherHelper } from '@/lib/utils';
 
-    import { useState, useEffect, useCallback } from 'react';
-    import { supabase } from '@/lib/supabaseClient.jsx';
-    import { useAuthActions } from '@/hooks/useAuthActions.js';
+export const useAuthSessionManagement = () => {
+  const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-    export const useAuthSessionManagement = () => {
-      const [user, setUser] = useState(null);
-      const [isAdmin, setIsAdmin] = useState(false);
-      const [loading, setLoading] = useState(true);
+  // Define las acciones de autenticación directamente aquí o impórtalas y úsalas
+  const fetchUserProfile = useCallback(async (userId) => {
+    // Lógica para obtener el perfil del usuario de Supabase
+    const { data, error } = await supabase
+      .from('profiles') // Asume que tienes una tabla 'profiles'
+      .select('*')
+      .eq('id', userId)
+      .single();
 
-      const { fetchUserProfile } = useAuthActions(setUser, setIsAdmin, setLoading, user);
+    if (error) {
+      console.error("Error fetching user profile:", error);
+      setIsAdmin(false); // O maneja el error según tu lógica
+      return null;
+    }
 
-      const handleUserSession = useCallback(async (session) => {
-        setLoading(true);
-        if (session?.user) {
-          const profile = await fetchUserProfile(session.user.id);
-          setUser({ ...session.user, profile });
-        } else {
-          setUser(null);
-          setIsAdmin(false);
-        }
-        setLoading(false);
-      }, [fetchUserProfile]);
+    // Lógica para determinar si el usuario es administrador basada en el perfil
+    setIsAdmin(data?.is_admin || false);
+    return data;
+  }, [/* Dependencias si las hay */]); // Agrega dependencias si fetchUserProfile usa variables externas
 
-      useEffect(() => {
-        const getInitialSession = async () => {
-          setLoading(true);
-          try {
-            const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-            if (sessionError) {
-              console.error("Error getting initial session:", sessionError.message);
-            }
-            await handleUserSession(session);
-          } catch (error) {
-            console.error("Exception in getInitialSession:", error);
-            setUser(null);
-            setIsAdmin(false);
-          } finally {
-            setLoading(false);
-          }
-        };
+  const handleUserSession = useCallback(async (session) => {
+    setLoading(true);
+    if (session?.user) {
+      const profile = await fetchUserProfile(session.user.id);
+      setUser({ ...session.user, profile });
+    } else {
+      setUser(null);
+      setIsAdmin(false);
+    }
+    setLoading(false);
+  }, [fetchUserProfile]); // Depende de fetchUserProfile
 
-        getInitialSession();
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      handleUserSession(session);
+    });
 
-        const { data: authListenerData } = supabase.auth.onAuthStateChange(async (event, session) => {
-          setLoading(true);
-          try {
-            await handleUserSession(session);
-          } catch (error) {
-            console.error("Exception in onAuthStateChange handler:", error);
-            setUser(null);
-            setIsAdmin(false);
-          } finally {
-            setLoading(false);
-          }
-        });
+    // Manejar la sesión inicial al cargar la página
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      handleUserSession(session);
+    });
 
-        return () => {
-          authListenerData?.subscription?.unsubscribe();
-        };
-      }, [handleUserSession]);
 
-      useEffect(() => {
-        const handleVisibilityChange = async () => {
-          if (document.visibilityState === 'visible') {
-            setLoading(true);
-            try {
-              const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-              if (sessionError) {
-                console.error("Error refreshing session on visibility change:", sessionError.message);
-              }
-              await handleUserSession(session);
-            } catch (error) {
-              console.error("Exception in handleVisibilityChange:", error);
-              setUser(null);
-              setIsAdmin(false);
-            } finally {
-              setLoading(false);
-            }
-          }
-        };
-
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-
-        return () => {
-          document.removeEventListener('visibilitychange', handleVisibilityChange);
-        };
-      }, [handleUserSession]);
-      
-      return { user, setUser, isAdmin, setIsAdmin, loading, setLoading };
+    return () => {
+      authListener.subscription.unsubscribe();
     };
-  
+  }, [handleUserSession]);
+
+  // Define otras acciones de autenticación aquí
+  const signIn = useCallback(async (credentials) => {
+    // Lógica para iniciar sesión
+    setLoading(true);
+    const { data, error } = await supabase.auth.signInWithPassword(credentials);
+    setLoading(false);
+    if (error) {
+      console.error("Error signing in:", error);
+      throw error; // Lanza el error para ser manejado en la UI
+    }
+    return data;
+  }, []);
+
+  const signOut = useCallback(async () => {
+    // Lógica para cerrar sesión
+    setLoading(true);
+    const { error } = await supabase.auth.signOut();
+    setLoading(false);
+    if (error) {
+      console.error("Error signing out:", error);
+      throw error;
+    }
+  }, []);
+
+  // ... otras acciones (signUp, resetPassword, etc.)
+
+  return {
+    user,
+    isAdmin,
+    loading,
+    signIn,
+    signOut,
+    fetchUserProfile, // Devuelve fetchUserProfile si es necesario fuera del hook
+    // ... devuelve otras acciones
+  };
+};

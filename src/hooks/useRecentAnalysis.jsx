@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext.jsx';
-import { supabase } from '@/lib/supabaseClient.js';
+import { supabase } from '@/lib/supabaseClient.jsx';
+
 
 const useRecentAnalysis = () => {
   const [recentAnalysis, setRecentAnalysis] = useState(null);
