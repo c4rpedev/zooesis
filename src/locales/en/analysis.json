@@ -1,5 +1,6 @@
 
     {
+      "selectAnalysisType": "Select analysis type",
       "newAnalysisPageTitle": "Start New Analysis",
       "newAnalysisPageDescription": "Upload an image of the lab results and fill in patient details.",
       "patientInformation": "Patient Information",
@@ -197,7 +198,10 @@
       "anamnesisTitle": "Anamnesis / Clinical Signs",
       "anamnesisLabel": "Anamnesis / Clinical Signs",
       "submitForAnalysis": "Submit for Analysis",
-      "noInterpretationAvailable": "No interpretation data available for this report.",
+ "reviewAnalysisTitle": "Review Analysis",
+ "reviewAnalysisDescription": "Review the extracted data and make corrections before interpretation.",
+ "editableValuesTitle": "Extracted Values",
+      "noInterpretationAvailable": "No interpretation data available for this report.", 
       "complexObjectWarningTitle": "Complex Data Structure",
       "complexObjectWarningText": "This section contains complex data. Displaying as raw JSON."
     }
