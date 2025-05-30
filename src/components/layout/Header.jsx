@@ -18,7 +18,7 @@
     import { useNavItems } from '@/hooks/useNavItems.jsx';
 
     const Header = ({ onMenuToggle, theme, toggleTheme }) => {
-      const { user, logout, isAdmin } = useAuth();
+      const { user, signOut, isAdmin, loading } = useAuth();
       const { t, language: currentLanguage, setLanguage } = useTranslation();
       const location = useLocation();
       const navItems = useNavItems();
@@ -26,7 +26,15 @@
       const pageTitle = getPageTitle(location.pathname, t, currentLanguage, user, isAdmin, navItems);
 
       const handleLogout = async () => {
-        await logout();
+        try {
+          // Llama a la función signOut obtenida del contexto
+          await signOut();
+          // Opcional: redirigir al usuario después de cerrar sesión si es necesario
+          // Considera redirigir dentro de useAuthSessionManagement después de un signOut exitoso
+        } catch (error) {
+          console.error("Error al cerrar sesión:", error);
+          // Aquí podrías mostrar un mensaje de error al usuario, por ejemplo, usando un toast
+        }
       };
 
       const languages = [
@@ -102,7 +110,7 @@
                      </DropdownMenuItem>
                   )}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout}>
+                  <DropdownMenuItem onClick={handleLogout} disabled={loading}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>{t('logout')}</span>
                   </DropdownMenuItem>

@@ -3,7 +3,9 @@ import { supabase } from '@/lib/supabaseClient.jsx';
 // Importa aquí cualquier otra dependencia necesaria para las acciones
 // import { someOtherHelper } from '@/lib/utils';
 
+
 export const useAuthSessionManagement = (setUserState, setIsAdminState, setLoadingState, currentUser) => {
+
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -12,7 +14,9 @@ export const useAuthSessionManagement = (setUserState, setIsAdminState, setLoadi
   const fetchUserProfile = useCallback(async (userId) => {
     // Lógica para obtener el perfil del usuario de Supabase
     const { data, error } = await supabase
+
       .from('user_profiles') // Asume que tienes una tabla 'profiles'
+
       .select('*')
       .eq('id', userId)
       .single();
@@ -57,6 +61,7 @@ export const useAuthSessionManagement = (setUserState, setIsAdminState, setLoadi
   }, [handleUserSession]);
 
   // Define otras acciones de autenticación aquí
+
   const login = async (email, password) => {
     if (setLoadingState) setLoadingState(true);
     try {
@@ -86,6 +91,7 @@ export const useAuthSessionManagement = (setUserState, setIsAdminState, setLoadi
   };
 
   const logout = useCallback(async () => {
+
     // Lógica para cerrar sesión
     setLoading(true);
     const { error } = await supabase.auth.signOut();
@@ -104,6 +110,7 @@ export const useAuthSessionManagement = (setUserState, setIsAdminState, setLoadi
     loading,
     login,
     logout,
+
     fetchUserProfile, // Devuelve fetchUserProfile si es necesario fuera del hook
     // ... devuelve otras acciones
   };
