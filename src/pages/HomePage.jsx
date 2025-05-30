@@ -6,7 +6,7 @@
     import { FilePlus2, History, BarChart3, Zap, User, Activity, Loader2, AlertTriangle, FileText, CalendarDays, PawPrint, Microscope } from 'lucide-react';
     import { motion } from 'framer-motion';
     import { useAuth } from '@/contexts/AuthContext.jsx';
-    import { useRecentAnalysis } from '@/hooks/useRecentAnalysis.jsx';
+    import  useRecentAnalysis  from '@/hooks/useRecentAnalysis.jsx';
     import { useTranslation } from '@/contexts/TranslationContext.jsx';
 
     const HomePage = () => {
