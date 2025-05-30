@@ -3,7 +3,9 @@ import { supabase } from '@/lib/supabaseClient.jsx';
 // Importa aquí cualquier otra dependencia necesaria para las acciones
 // import { someOtherHelper } from '@/lib/utils';
 
-export const useAuthSessionManagement = () => {
+
+export const useAuthSessionManagement = (setUserState, setIsAdminState, setLoadingState, currentUser) => {
+
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -12,7 +14,9 @@ export const useAuthSessionManagement = () => {
   const fetchUserProfile = useCallback(async (userId) => {
     // Lógica para obtener el perfil del usuario de Supabase
     const { data, error } = await supabase
-      .from('profiles') // Asume que tienes una tabla 'profiles'
+
+      .from('user_profiles') // Asume que tienes una tabla 'profiles'
+
       .select('*')
       .eq('id', userId)
       .single();
@@ -57,19 +61,37 @@ export const useAuthSessionManagement = () => {
   }, [handleUserSession]);
 
   // Define otras acciones de autenticación aquí
-  const signIn = useCallback(async (credentials) => {
-    // Lógica para iniciar sesión
-    setLoading(true);
-    const { data, error } = await supabase.auth.signInWithPassword(credentials);
-    setLoading(false);
-    if (error) {
-      console.error("Error signing in:", error);
-      throw error; // Lanza el error para ser manejado en la UI
-    }
-    return data;
-  }, []);
 
-  const signOut = useCallback(async () => {
+  const login = async (email, password) => {
+    if (setLoadingState) setLoadingState(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      // if (data.user) {
+      //   const profile = await fetchUserProfile(data.user.id);
+      //   if (setUserState) setUserState({ ...data.user, profile });
+      //   toast({
+      //     title: t('loginSuccessTitle'),
+      //     description: t('loginSuccessDescription'),
+      //     variant: 'success',
+      //   });
+      // }
+      return { user: data.user, error: null };
+    } catch (error) {
+      console.error('Login error:', error);
+      toast({
+        title: t('loginErrorTitle'),
+        description: error.message || t('loginErrorDescription'),
+        variant: 'destructive',
+      });
+      return { user: null, error };
+    } finally {
+      if (setLoadingState) setLoadingState(false);
+    }
+  };
+
+  const logout = useCallback(async () => {
+
     // Lógica para cerrar sesión
     setLoading(true);
     const { error } = await supabase.auth.signOut();
@@ -86,8 +108,9 @@ export const useAuthSessionManagement = () => {
     user,
     isAdmin,
     loading,
-    signIn,
-    signOut,
+    login,
+    logout,
+
     fetchUserProfile, // Devuelve fetchUserProfile si es necesario fuera del hook
     // ... devuelve otras acciones
   };
