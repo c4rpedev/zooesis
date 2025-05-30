@@ -46,7 +46,7 @@
               anamnesis={anamnesis}
             />
             
-            {valuesForTable && Object.keys(valuesForTable).length > 0 ? (
+            {/* {valuesForTable && Object.keys(valuesForTable).length > 0 ? (
               <ValuesTableDisplay
                 values={valuesForTable}
                 analysisType={analysisData.analysis_type}
@@ -54,7 +54,7 @@
               />
             ) : (
               <p className="my-4 text-muted-foreground">{t('noExtractedValues')}</p>
-            )}
+            )} */}
 
             <InterpretationSections
               interpretation={interpretedValues}
