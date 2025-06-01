@@ -48,7 +48,7 @@
         setLoading(true);
         try {
           const { error: signUpError } = await signup(email, password, fullName);
-
+console.log('signUpError',signUpError)
           if (signUpError) {
             setError(signUpError.message);
             toast({
@@ -57,10 +57,17 @@
               variant: "destructive",
             });
           } else {
-            
-            navigate('/'); 
+            toast({
+              title: t('signupNeedsVerificationTitle'), // Usamos la traducción que ya tenías
+              description: t('signupNeedsVerificationDescription'),
+              variant: 'default', // O 'success' si prefieres
+              duration: 10000, // Para dar tiempo al usuario a leer
+           });
+            navigate('/verify-email');
           }
         } catch (catchError) {
+console.log('catchError',catchError)
+
           setError(catchError.message);
            toast({
             title: t('signUpFailed'),
