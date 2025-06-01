@@ -24,7 +24,7 @@
     import AdminAnalyticsPage from '@/pages/admin/AdminAnalyticsPage.jsx';
     import { Loader2 } from 'lucide-react';
     import HomeRedirect from '@/components/auth/HomeRedirect.jsx';
-
+    import EmailVerificationPage from './pages/EmailVerificationPage.jsx';
 
     const LoadingFallback = () => (
       <div className="flex h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-sky-100 dark:from-slate-900 dark:to-sky-950">
@@ -96,7 +96,7 @@
                 <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
                 <Route path="/signup" element={<PublicRoute><SignUpPage /></PublicRoute>} />
                 <Route path="/forgot-password" element={<PublicRoute><ForgotPasswordPage /></PublicRoute>} />
-                
+                <Route path="/verify-email" element={<EmailVerificationPage />} />
                 <Route path="/dashboard" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
                 <Route path="/new-analysis" element={<ProtectedRoute><NewAnalysisPage /></ProtectedRoute>} />
                 <Route path="/review/:analysisType/:analysisId" element={<ProtectedRoute><ReviewPage /></ProtectedRoute>} />

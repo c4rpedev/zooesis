@@ -104,12 +104,94 @@ export const useAuthSessionManagement = (setUserState, setIsAdminState, setLoadi
 
   // ... otras acciones (signUp, resetPassword, etc.)
 
+  // const signup = async (email, password, fullName) => {
+  //   if (setLoadingState) setLoadingState(true);
+  //   try {
+  //     const { data, error } = await supabase.auth.signUp({ email, password });
+  //     if (error) throw error;
+
+  //     if (data.user) {
+  //       const { error: profileError } = await supabase
+  //         .from('user_profiles')
+  //         .insert([{ id: data.user.id, full_name: fullName }]);
+
+  //       if (profileError) {
+  //         console.error('Error inserting user profile:', profileError);
+  //         // Potentially delete the user if profile insertion fails
+  //         // await supabase.auth.api.deleteUser(data.user.id); // Consider this implication carefully
+  //         throw profileError; 
+  //       }
+  //       // Optionally, trigger a login or session refresh here if needed
+  //       // For now, just returning the user data directly
+  //       return { user: data.user, error: null };
+  //     }
+  //     // if user is null, but no error, it might mean email confirmation is required
+  //     // depending on Supabase project settings.
+  //     // For this implementation, we'll treat it as a success needing confirmation.
+  //     // If specific handling for unconfirmed users is needed, it can be added here.
+  //     return { user: data.user, error: null }; 
+  //   } catch (error) {
+  //     console.error('Signup error:', error);
+  //     // Consider using a toast notification for errors, similar to login
+  //     // toast({
+  //     //   title: t('signupErrorTitle'),
+  //     //   description: error.message || t('signupErrorDescription'),
+  //     //   variant: 'destructive',
+  //     // });
+  //     return { user: null, error };
+  //   } finally {
+  //     if (setLoadingState) setLoadingState(false);
+  //   }
+  // };
+  const signup = async (email, password, fullName) => {
+    if (setLoadingState) setLoadingState(true);
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+          },
+        },
+      });
+      if (error) throw error;
+      
+      // if (data.user && data.user.identities && data.user.identities.length > 0) {
+      //    toast({
+      //     title: t('signupSuccessTitle'),
+      //     description: t('signupSuccessDescription'),
+      //     variant: 'success',
+      //   });
+      // } else if (data.user && (!data.user.identities || data.user.identities.length === 0)) {
+      //    toast({
+      //     title: t('signupNeedsVerificationTitle'),
+      //     description: t('signupNeedsVerificationDescription'),
+      //     variant: 'default',
+      //     duration: 10000, 
+      //   });
+      // }
+      return { user: data.user, error: null };
+    } catch (error) {
+      console.error('Signup error:', error);
+      // toast({
+      //   title: t('signupErrorTitle'),
+      //   description: error.message || t('signupErrorDescription'),
+      //   variant: 'destructive',
+      // });
+      return { user: null, error };
+    } finally {
+      if (setLoadingState) setLoadingState(false);
+    }
+  };
+  
   return {
     user,
     isAdmin,
     loading,
     login,
     logout,
+    signup, // Add signup to returned object
 
     fetchUserProfile, // Devuelve fetchUserProfile si es necesario fuera del hook
     // ... devuelve otras acciones
