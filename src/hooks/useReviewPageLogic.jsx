@@ -43,12 +43,29 @@ const useReviewPageLogic = (analysisId, analysisType, user, toast, navigate, t, 
       
       setAnalysis(data);
       const initialValues = {};
-      const currentParams = getParametersForAnalysisType(data.analysis_type); 
-      
-      const actualExtractedValues = data.extracted_values?.extracted_values || data.extracted_values || {};
+      const currentParams = getParametersForAnalysisType(data.analysis_type);
+      // Assuming data.extracted_values directly contains the nested structure like { "hemogram_analysis": { ... } }
+      // Or if analysisType is 'hemogram', it's data.extracted_values.hemogram_analysis
+      // For a more generic approach, let's assume the key is `${data.analysis_type}_analysis`
+      const analysisDataRoot = data.extracted_values || {};
+      const analysisData = analysisDataRoot[`${data.analysis_type}_analysis`] || analysisDataRoot || {};
+
 
       currentParams.forEach(param => {
-        initialValues[param.id] = actualExtractedValues[param.id] ?? actualExtractedValues[param.label] ?? "";
+        const paramData = analysisData[param.id];
+        if (typeof paramData === 'object' && paramData !== null) {
+          initialValues[param.id] = {
+            value: paramData.value ?? '',
+            unit: paramData.unit ?? param.unit ?? '', // Prioritize fetched unit, fallback to param definition
+            reference_range: paramData.reference_range ?? param.reference_range ?? '' // Prioritize fetched range
+          };
+        } else {
+          initialValues[param.id] = {
+            value: paramData ?? '', // If it's a direct value (legacy)
+            unit: param.unit || '', 
+            reference_range: param.reference_range || '' 
+          };
+        }
       });
       setEditableValues(initialValues);
       setParameters(currentParams); 
@@ -66,18 +83,27 @@ const useReviewPageLogic = (analysisId, analysisType, user, toast, navigate, t, 
     fetchAnalysis();
   }, [fetchAnalysis]);
 
-  const handleValueChange = (param, value) => {
-    setEditableValues(prev => ({ ...prev, [param]: value }));
+  const handleValueChange = (paramId, fieldKey, newValue) => {
+    setEditableValues(prev => ({
+      ...prev,
+      [paramId]: {
+        ...prev[paramId],
+        [fieldKey]: newValue
+      }
+    }));
   };
 
   const handleSaveReview = async () => {
     setIsSaving(true);
     try {
-      const updatedAnalysisData = { 
-        extracted_values: { extracted_values: editableValues }, // Maintain the nested structure if needed for consistency
+      // Construct the nested structure for saving, e.g., { "hemogram_analysis": editableValues }
+      const dynamicAnalysisKey = `${analysisType}_analysis`;
+      const updatedAnalysisData = {
+        extracted_values: { [dynamicAnalysisKey]: editableValues },
         status: 'Reviewed',
         updated_at: new Date().toISOString()
       };
+
 
       const { error } = await supabase
         .from('analyses')
@@ -99,10 +125,9 @@ const useReviewPageLogic = (analysisId, analysisType, user, toast, navigate, t, 
   const handleConfirmAndInterpret = async () => {
     setIsInterpreting(true);
     try {
-      const valuesToInterpret = { ...editableValues };
-      
-      const interpretingStatusUpdate = { 
-        extracted_values: { extracted_values: valuesToInterpret }, // Save with nesting
+      const dynamicAnalysisKey = `${analysisType}_analysis`;
+      const interpretingStatusUpdate = {
+        extracted_values: { [dynamicAnalysisKey]: editableValues },
         status: 'Interpreting',
         updated_at: new Date().toISOString()
       };
@@ -116,6 +141,13 @@ const useReviewPageLogic = (analysisId, analysisType, user, toast, navigate, t, 
       if (saveError) throw saveError;
       setAnalysis(prev => ({...prev, ...interpretingStatusUpdate}));
 
+      // Flatten editableValues for the interpretValues service
+      const flatValuesToInterpret = {};
+      for (const paramId in editableValues) {
+        flatValuesToInterpret[paramId] = editableValues[paramId];
+      }
+
+
       const patientContext = {
         patient_name: analysis?.patient_name,
         species: analysis?.species,
@@ -125,10 +157,11 @@ const useReviewPageLogic = (analysisId, analysisType, user, toast, navigate, t, 
         weight: analysis?.weight,
         anamnesis: analysis?.anamnesis,
       };
-      console.log('valuesToInterpret',valuesToInterpret)
-      console.log('patientContext',patientContext)
-      const interpretationResult = await interpretValues(valuesToInterpret, analysisType, language, patientContext);
+     console.log('flatValuesToInterpret',flatValuesToInterpret)
+     console.log('patientContext',patientContext)
+      const interpretationResult = await interpretValues(flatValuesToInterpret, analysisType, language, patientContext);
       console.log('interpretationResult',interpretationResult)
+      
       
       const finalUpdateData = { 
         report_data: interpretationResult, 
