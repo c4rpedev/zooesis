@@ -6,6 +6,7 @@
     import { useToast } from '@/components/ui/use-toast.jsx';
     import { useTranslation } from '@/contexts/TranslationContext.jsx';
     import { extractValuesFromImage } from '@/lib/geminiService.jsx';
+    import { getPlanDetails } from '@/lib/planConfig.js'; // <-- IMPORTED
 
     const useNewAnalysisForm = (initialAnalysisType = 'hemogram') => {
       const { user } = useAuth();
@@ -98,6 +99,30 @@
 
       const handleSubmit = async (event) => {
         if (event) event.preventDefault();
+
+        // --- Plan Limit Check ---
+    if (!user || !user.profile) {
+      toast({ title: t('errorTitle'), description: t('userProfileNotFound', {defaultValue: "User profile not found. Please try logging in again."}), variant: 'destructive' });
+      setIsSubmitting(false);
+      return;
+    }
+
+    const currentPlanId = user.profile.subscription_plan_id;
+    const currentAnalysisCount = user.profile.analysis_count || 0;
+    const { nameKey: currentPlanNameKey, limit: currentPlanLimit } = getPlanDetails(currentPlanId);
+
+    if (currentPlanLimit !== Infinity && currentAnalysisCount >= currentPlanLimit) {
+      toast({
+        title: t('analysisLimitReachedTitle', {defaultValue: "Analysis Limit Reached"}),
+        description: t('analysisLimitReachedMessage', { planName: t(currentPlanNameKey, {defaultValue: "your current plan"}), defaultValue: `You have reached your analysis limit for ${t(currentPlanNameKey)}. Please upgrade.` }),
+        variant: 'destructive',
+        duration: 7000,
+      });
+      navigate('/subscription');
+      setIsSubmitting(false); // Ensure isSubmitting is reset
+      return;
+    }
+    // --- End Plan Limit Check ---
         
         if (!validateForm()) {
           toast({ title: t('validationErrorTitle'), description: t('validationErrorMessage'), variant: 'destructive' });
@@ -174,7 +199,28 @@
             .single();
 
           if (dbError) throw dbError;
+ // --- Increment Analysis Count ---
+      // IMPORTANT FOR USER: Verify 'id' is the correct column name for the user's ID in 'user_profiles' table.
+      // It should match the column that is a foreign key to auth.users.id.
+      const newAnalysisCount = (user.profile.analysis_count || 0) + 1;
+      const { error: updateCountError } = await supabase
+        .from('user_profiles')
+        .update({ analysis_count: newAnalysisCount })
+        .eq('id', user.id); // <<< CHECK THIS 'id' COLUMN NAME!
 
+      if (updateCountError) {
+        console.error("Error updating analysis count:", updateCountError);
+        // This is a non-fatal error for this specific flow; the analysis was created.
+        // The user's count might be stale until their profile is next refreshed.
+        // You might want to add a specific toast here if it's critical.
+      } else {
+        // TODO: Update analysis_count in local AuthContext state for immediate UI feedback.
+        // Example: if (user.refreshUserProfile) { user.refreshUserProfile(); }
+        // Or, if your useAuth hook provides a setter for the profile:
+        // user.setProfile({ ...user.profile, analysis_count: newAnalysisCount });
+        console.log("Analysis count updated in DB. Local state update needed for AuthContext.");
+      }
+      // --- End Increment Analysis Count ---
           toast({ title: t('submissionSuccessTitle'), description: t('submissionSuccessMessage', {type: t(analysisType)}) });
           resetForm();
           navigate(`/review/${analysisType}/${dbData.id}`);

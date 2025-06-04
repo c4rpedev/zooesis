@@ -7,8 +7,7 @@
 
     const ReviewPageContent = ({ analysis, isProcessingOCR, parameters, editableValues, onValueChange, analysisType }) => {
       const { t } = useTranslation();
-      console.log("ReviewPageContent received analysis:", analysis);
-      console.log("analysis.image_url:", analysis?.image_url); 
+    
       return (
         <CardContent className="p-6 md:p-8 space-y-6">
           
