@@ -193,7 +193,7 @@ export async function interpretValues(valuesData, analysisType, language, patien
     const fullPrompt = patientContextString
       ? `${patientContextString}\n${promptText}\n\nLab Values:\n${valuesString}`
       : `${promptText}\n\nLab Values:\n${valuesString}`;
-
+console.log('fullPrompt',fullPrompt)
     const model = genAI.getGenerativeModel({ model: modelName, ...textModelConfigBase });
     const result = await model.generateContent(fullPrompt);
 
