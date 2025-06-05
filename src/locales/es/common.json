@@ -71,6 +71,17 @@
       "viewReportButton": "Ver Informe",
       "homeRecentActivityTitle": "Actividad Reciente",
       "homeRecentActivityDescription": "Tu último análisis aparecerá aquí.",
-      "responsabilities": "Los resultados generados por esta plataforma se basan únicamente en los datos proporcionados por el usuario y en bibliografía científica actualizada, sin considerar el historial clínico completo, otros síntomas ni una exploración física detallada del paciente. En ningún caso, estos resultados deben ser utilizados como un diagnóstico definitivo ni reemplazar la experiencia y responsabilidad del médico veterinario tratante. Esta herramienta no exime la necesidad de una consulta profesional para un diagnóstico y evaluación adecuados."
+      "responsabilities": "Los resultados generados por esta plataforma se basan únicamente en los datos proporcionados por el usuario y en bibliografía científica actualizada, sin considerar el historial clínico completo, otros síntomas ni una exploración física detallada del paciente. En ningún caso, estos resultados deben ser utilizados como un diagnóstico definitivo ni reemplazar la experiencia y responsabilidad del médico veterinario tratante. Esta herramienta no exime la necesidad de una consulta profesional para un diagnóstico y evaluación adecuados.",
+      "profileSettingsTitle": "Configuración del perfil",
+      "profileSettingsDescription": "Administra la configuración y preferencias de tu perfil.",
+      "personalInformation": "Información personal",
+      "editProfile": "Editar perfil",
+      "fullName": "Nombre completo",
+      "avatarUrl": "URL del avatar",
+      "enterAvatarUrlPlaceholder": "Ingresa la URL del avatar",
+      "changePassword": "Cambiar contraseña",
+      "newPassword": "Nueva contraseña",
+      "confirmNewPassword": "Confirmar nueva contraseña",
+      "updatePassword": "Actualizar contraseña"
     }
   
