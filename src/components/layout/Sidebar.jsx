@@ -33,7 +33,7 @@
                     : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-slate-800 dark:hover:text-slate-100"
                 )}
               >
-                {/* Icon removed as per user request */}
+                <item.icon className="h-5 w-5" />
                 <span>{item.label}</span>
               </Link>
             ))}
@@ -50,7 +50,7 @@
                     : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-slate-800 dark:hover:text-slate-100"
                 )}
               >
-                {/* Icon removed as per user request */}
+                 <item.icon className="h-5 w-5" />
                 <span>{item.label}</span>
               </Link>
             ))}
