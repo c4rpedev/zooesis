@@ -16,7 +16,7 @@
         try {
           const { data, error } = await supabase
             .from('user_profiles')
-            .select('is_admin, full_name, avatar_url, subscription_plan, analyses_used')
+            .select('full_name, avatar_url, subscription_plan_id, analysis_count, current_period_end') 
             .eq('id', userId)
             .single();
 

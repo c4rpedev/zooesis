@@ -27,6 +27,12 @@
       "paymentIntegrationComingSoon": "La integración de pagos estará disponible pronto.",
       "analysisLimitReachedTitle": "Límite de Análisis Alcanzado",
       "analysisLimitReachedDescription": "Has alcanzado el límite de 10 análisis para el Plan Gratuito. Por favor, actualiza tu plan para continuar.",
-      "upgradePlan": "Actualizar Plan"
+      "upgradePlan": "Actualizar Plan",
+      "subscriptionDetailsTitle": "Subscription Details",
+      "currentPlanLabel": "Current Plan",
+      "analysesUsedLabel": "Analyses Used This Period",
+      "analysesLeftLabel": "Analyses Remaining This Period",
+      "renewsOnLabel": "Renews On",
+      "manageSubscriptionButton": "Manage Subscription"
     }
   

@@ -82,7 +82,11 @@
   "changePassword": "Mudar senha",
   "newPassword": "Nova senha",
   "confirmNewPassword": "Confirmar nova senha",
-  "updatePassword": "Atualizar senha"
+  "updatePassword": "Atualizar senha",
+ "ocrProcessingButton": "Processando OCR",
+  "ocrProcessingInfo": "Estamos processando a imagem usando OCR. Isso pode levar um momento.",
+  "ocrProcessingWait": "Por favor, aguarde enquanto processamos a imagem.",
+  "submitting": "Enviando..."
 
     }
   

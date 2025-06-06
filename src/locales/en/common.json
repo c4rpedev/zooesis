@@ -82,6 +82,10 @@
       "changePassword": "Change Password",
       "newPassword": "New Password",
       "confirmNewPassword": "Confirm New Password",
-      "updatePassword": "Update Password"
+      "updatePassword": "Update Password",
+      "ocrProcessingButton": "Processing OCR",
+      "ocrProcessingInfo": "We are currently processing the image using OCR. This may take a moment.",
+      "ocrProcessingWait": "Please wait while we process the image.",
+      "submitting": "Submitting..."
     }
   
