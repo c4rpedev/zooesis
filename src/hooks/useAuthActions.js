@@ -16,7 +16,7 @@
         try {
           const { data, error } = await supabase
             .from('user_profiles')
-            .select('full_name, avatar_url, subscription_plan_id, analysis_count, current_period_end') 
+            .select('full_name, avatar_url, subscription_plan_id, analysis_count, current_period_end, phone, country') 
             .eq('id', userId)
             .single();
 
@@ -67,7 +67,7 @@
         }
       };
 
-      const signup = async (email, password, fullName) => {
+      const signup = async (email, password, fullName, phone, country) => {
         if (setLoadingState) setLoadingState(true);
         try {
           const { data, error } = await supabase.auth.signUp({
@@ -76,6 +76,8 @@
             options: {
               data: {
                 full_name: fullName,
+                phone: phone,     
+                country: country
               },
             },
           });

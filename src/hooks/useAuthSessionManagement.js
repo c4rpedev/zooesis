@@ -17,7 +17,7 @@ export const useAuthSessionManagement = (setUserState, setIsAdminState, setLoadi
 
       .from('user_profiles') // Asume que tienes una tabla 'profiles'
 
-      .select('*')
+      .select('*,  phone, country')
       .eq('id', userId)
       .single();
 
@@ -143,7 +143,7 @@ export const useAuthSessionManagement = (setUserState, setIsAdminState, setLoadi
   //     if (setLoadingState) setLoadingState(false);
   //   }
   // };
-  const signup = async (email, password, fullName) => {
+  const signup = async (email, password, fullName, phone, country) => {
     if (setLoadingState) setLoadingState(true);
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -152,6 +152,8 @@ export const useAuthSessionManagement = (setUserState, setIsAdminState, setLoadi
         options: {
           data: {
             full_name: fullName,
+            phone: phone,     
+            country: country
           },
         },
       });
