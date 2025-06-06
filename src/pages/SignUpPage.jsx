@@ -5,7 +5,7 @@
     import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx';
     import { Input } from '@/components/ui/input.jsx';
     import { Label } from '@/components/ui/label.jsx';
-    import { UserPlus, Mail, Key, LogIn, Loader2, User } from 'lucide-react';
+    import { Phone as PhoneIcon, Globe, UserPlus, Mail, Key, LogIn, Loader2, User } from 'lucide-react';
     import { motion } from 'framer-motion';
     import { useAuth } from '@/contexts/AuthContext.jsx';
     import { useToast } from '@/components/ui/use-toast.jsx';
@@ -23,6 +23,8 @@
       const [confirmPassword, setConfirmPassword] = useState('');
       const [loading, setLoading] = useState(false);
       const [error, setError] = useState('');
+      const [phone, setPhone] = useState('');
+      const [country, setCountry] = useState('');
 
       const handleSignUp = async (e) => {
         e.preventDefault();
@@ -45,9 +47,18 @@
           });
           return;
         }
+         // Add validation for new fields
+    if (!phone.trim()) {
+      toast({ title: t('validationErrorTitle'), description: t('phoneNumberRequired', {defaultValue: "Phone number is required."}), variant: 'destructive' });
+      return;
+    }
+    if (!country.trim()) {
+      toast({ title: t('validationErrorTitle'), description: t('countryRequired', {defaultValue: "Country is required."}), variant: 'destructive' });
+      return;
+    }
         setLoading(true);
         try {
-          const { error: signUpError } = await signup(email, password, fullName);
+          const { error: signUpError } = await signup(email, password, fullName, phone, country);
 console.log('signUpError',signUpError)
           if (signUpError) {
             setError(signUpError.message);
@@ -118,6 +129,43 @@ console.log('catchError',catchError)
                     className="h-12 text-base focus:ring-2 focus:ring-primary transition-all" 
                   />
                 </motion.div>
+                  {/* Phone Number Input */}
+            <motion.div 
+              className="space-y-2"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 }} // Adjusted delay
+            >
+              <Label htmlFor="phone" className="flex items-center text-slate-700 dark:text-slate-200">
+                <PhoneIcon className="mr-2 h-5 w-5 text-primary" /> {t('phoneNumberLabel', { defaultValue: "Phone Number"})}
+              </Label>
+              <Input 
+                id="phone" type="tel" value={phone} 
+                onChange={(e) => setPhone(e.target.value)} 
+                placeholder={t('phoneNumberPlaceholder', { defaultValue: "e.g., +1234567890"})} 
+                required 
+                className="h-12 text-base focus:ring-2 focus:ring-primary transition-all"
+              />
+            </motion.div>
+
+            {/* Country Input */}
+            <motion.div 
+              className="space-y-2"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: 0.15 }} // Adjusted delay
+            >
+              <Label htmlFor="country" className="flex items-center text-slate-700 dark:text-slate-200">
+                <Globe className="mr-2 h-5 w-5 text-primary" /> {t('countryLabel', { defaultValue: "Country"})}
+              </Label>
+              <Input 
+                id="country" type="text" value={country} 
+                onChange={(e) => setCountry(e.target.value)} 
+                placeholder={t('countryPlaceholder', { defaultValue: "e.g., United States"})} 
+                required 
+                className="h-12 text-base focus:ring-2 focus:ring-primary transition-all"
+              />
+            </motion.div>
                 <motion.div 
                   className="space-y-2"
                   initial={{ opacity: 0, x: -20 }}

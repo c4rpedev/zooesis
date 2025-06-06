@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 const EditableHemogramTable = ({ parameters, values, onValueChange, analysisType }) => {
   const { t } = useTranslation();
 
-  const getTranslationKey = (paramId) => `${analysisType}Params.${paramId}`;
+  const getTranslationKey = (paramId) => `${paramId}`;
 
   return (
     <motion.div 

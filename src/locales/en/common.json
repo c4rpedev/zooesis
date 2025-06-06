@@ -86,6 +86,7 @@
       "ocrProcessingButton": "Processing OCR",
       "ocrProcessingInfo": "We are currently processing the image using OCR. This may take a moment.",
       "ocrProcessingWait": "Please wait while we process the image.",
-      "submitting": "Submitting..."
+      "submitting": "Submitting...",
+      "selectLanguage": "Select Language"
     }
   
