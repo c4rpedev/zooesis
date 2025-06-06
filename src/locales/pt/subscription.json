@@ -28,5 +28,11 @@
       "analysisLimitReachedTitle": "Limite de Análises Atingido",
       "analysisLimitReachedDescription": "Você atingiu o limite de 10 análises para o Plano Gratuito. Por favor, atualize seu plano para continuar.",
       "upgradePlan": "Atualizar Plano"
+,"subscriptionDetailsTitle": "Subscription Details"
+,"currentPlanLabel": "Current Plan"
+,"analysesUsedLabel": "Analyses Used This Cycle"
+,"analysesLeftLabel": "Analyses Left This Cycle"
+,"renewsOnLabel": "Renews On"
+,"manageSubscriptionButton": "Manage Subscription"
     }
   
