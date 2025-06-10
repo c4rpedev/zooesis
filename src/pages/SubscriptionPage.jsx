@@ -53,7 +53,7 @@ const SubscriptionPage = () => {
       ctaKey: "planPopularCTA",
       popular: true,
       planId: "popular_internal",
-      stripePriceId: "price_1Q93ZRFDb5nnq6rJbMJRSsJk" // YOUR ACTUAL STRIPE PRICE ID 
+      stripePriceId: "price_1QhdDXFDb5nnq6rJFh9CHcid" // YOUR ACTUAL STRIPE PRICE ID 
     },
     {
       nameKey: "planProfessionalName",

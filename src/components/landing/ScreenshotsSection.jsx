@@ -5,8 +5,8 @@
 
     const ScreenshotsSection = () => {
       const { t } = useTranslation();
-      const image1Src = "https://storage.googleapis.com/hostinger-horizons-assets-prod/eb530bef-47a9-4fae-b305-64f5c47c846e/458707190848a3f1151ece06c760428e.jpg";
-      const image2Src = "https://storage.googleapis.com/hostinger-horizons-assets-prod/eb530bef-47a9-4fae-b305-64f5c47c846e/55f2759d381e2c8c49dae99ce4a5b06a.jpg";
+      const image1Src = "https://uyxbupyjmyvulmpjtyum.supabase.co/storage/v1/object/public/landing-images//screen_mock_2.png";
+      const image2Src = "https://uyxbupyjmyvulmpjtyum.supabase.co/storage/v1/object/public/landing-images//screen_mock.png";
 
       return (
         <section className="py-16 md:py-24 bg-white dark:bg-slate-850">
@@ -21,7 +21,7 @@
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ duration: 0.6 }}
-                className="rounded-lg shadow-2xl overflow-hidden border-4 border-slate-200 dark:border-slate-700 aspect-[16/10] md:aspect-auto"
+                className="rounded-lg shadow-2xl overflow-hidden  border-slate-200 dark:border-slate-700 aspect-[16/10] md:aspect-auto"
               >
                 <img  className="w-full h-full object-cover" alt={t('altDashboardScreenshot')} src={image1Src} />
               </motion.div>
@@ -30,7 +30,7 @@
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ duration: 0.6, delay:0.2 }}
-                className="rounded-lg shadow-2xl overflow-hidden border-4 border-slate-200 dark:border-slate-700 aspect-[16/10] md:aspect-auto"
+                className="rounded-lg shadow-2xl overflow-hidden border-slate-200 dark:border-slate-700 aspect-[16/10] md:aspect-auto"
               >
                 <img  className="w-full h-full object-cover" alt={t('altReportScreenshot')} src={image2Src} />
               </motion.div>

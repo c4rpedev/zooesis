@@ -4,7 +4,7 @@ export const PLAN_CONFIG = {
       limit: 10
     },
     // Your Stripe Price ID for the Popular plan
-    'price_1Q93ZRFDb5nnq6rJbMJRSsJk': {
+    'price_1QhdDXFDb5nnq6rJFh9CHcid': {
       nameKey: 'planPopularName',
       limit: 90
     },

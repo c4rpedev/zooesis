@@ -14,7 +14,7 @@
             </p>
             <div className="flex justify-center space-x-6">
               <Button variant="outline" className="border-primary text-primary hover:bg-primary/10" asChild>
-                <a href="mailto:soporte@zooesis.com">{t('contactSupport')}</a>
+                <a href="mailto:admin@zooesis.com">{t('contactSupport')}</a>
               </Button>
             </div>
           </div>
