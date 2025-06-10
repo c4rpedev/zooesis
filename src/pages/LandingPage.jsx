@@ -16,9 +16,10 @@
           <LandingPageHeader />
           <HeroSection />
           <WhatIsZooesisSection />
-          <BenefitsSection />
-          <GrowingSection />
           <ScreenshotsSection />
+          <BenefitsSection />
+          {/* <GrowingSection /> */}
+         
           <RegistrationSection />
           <TrustSection />
           <LandingPageFooter />

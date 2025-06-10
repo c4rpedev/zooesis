@@ -17,7 +17,7 @@
               <Button size="lg" asChild className="bg-white hover:bg-slate-100 text-primary text-lg px-10 py-7 rounded-full shadow-lg transform hover:scale-105 transition-transform">
                 <Link to="/signup">{t('createAccount')}</Link>
               </Button>
-              <Button size="lg" variant="outline" asChild className="border-white hover:bg-white/10 text-white text-lg px-10 py-7 rounded-full shadow-lg transform hover:scale-105 transition-transform">
+              <Button size="lg" variant="outline" asChild className="border-white hover:bg-white/10 text-black text-lg px-10 py-7 rounded-full shadow-lg transform hover:scale-105 transition-transform">
                 <Link to="/login">{t('login')}</Link>
               </Button>
             </div>
