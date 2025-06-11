@@ -49,29 +49,29 @@
       ],
       urinalysis: [
         // Physical/Macroscopic
-        { id: "UrineColor", label: "Color", unit: "", reference_range: "Yellow" },
-        { id: "UrineClarity", label: "Clarity/Turbidity", unit: "", reference_range: "Clear" },
+        { id: "Color", label: "Color", unit: "", reference_range: "Yellow" },
+        { id: "Clarity", label: "Clarity/Turbidity", unit: "", reference_range: "Clear" },
         // Chemical/Dipstick
-        { id: "UrineSG", label: "Specific Gravity", unit: "", refMin: "1.015", refMax: "1.045" }, // Dog, cat can be higher
-        { id: "UrinePH", label: "pH", unit: "", refMin: "5.5", refMax: "7.0" },
-        { id: "UrineProtein", label: "Protein", unit: "mg/dL", reference_range: "Negative/Trace" },
-        { id: "UrineGlucose", label: "Glucose", unit: "mg/dL", reference_range: "Negative" },
-        { id: "UrineKetones", label: "Ketones", unit: "mg/dL", reference_range: "Negative" },
-        { id: "UrineBilirubin", label: "Bilirubin", unit: "", reference_range: "Negative (Trace in dogs)" },
-        { id: "UrineBlood", label: "Blood/Hemoglobin", unit: "", reference_range: "Negative" },
-        { id: "UrineLeukocytes", label: "Leukocyte Esterase", unit: "", reference_range: "Negative" }, // Often unreliable in cats
-        { id: "UrineNitrites", label: "Nitrites", unit: "", reference_range: "Negative" },
-        { id: "UrineUrobilinogen", label: "Urobilinogen", unit: "EU/dL", reference_range: "Normal/0.2-1.0" },
+        { id: "SG", label: "Specific Gravity", unit: "", refMin: "1.015", refMax: "1.045" }, // Dog, cat can be higher
+        { id: "PH", label: "pH", unit: "", refMin: "5.5", refMax: "7.0" },
+        { id: "Protein", label: "Protein", unit: "mg/dL", reference_range: "Negative/Trace" },
+        { id: "Glucose", label: "Glucose", unit: "mg/dL", reference_range: "Negative" },
+        { id: "Ketones", label: "Ketones", unit: "mg/dL", reference_range: "Negative" },
+        { id: "Bilirubin", label: "Bilirubin", unit: "", reference_range: "Negative (Trace in dogs)" },
+        { id: "Blood", label: "Blood/Hemoglobin", unit: "", reference_range: "Negative" },
+        { id: "Leukocytes", label: "Leukocyte Esterase", unit: "", reference_range: "Negative" }, // Often unreliable in cats
+        { id: "Nitrites", label: "Nitrites", unit: "", reference_range: "Negative" },
+        { id: "Urobilinogen", label: "Urobilinogen", unit: "EU/dL", reference_range: "Normal/0.2-1.0" },
         // Microscopic Sediment (per HPF - High Power Field, or LPF - Low Power Field)
-        { id: "UrineRBC", label: "Red Blood Cells", unit: "/HPF", refMin: "0", refMax: "5" },
-        { id: "UrineWBC", label: "White Blood Cells", unit: "/HPF", refMin: "0", refMax: "5" },
-        { id: "UrineEpithelialCells", label: "Epithelial Cells (Squamous, Transitional, Renal)", unit: "/HPF", reference_range: "Few" },
-        { id: "UrineCasts", label: "Casts (Hyaline, Granular, Cellular, Waxy)", unit: "/LPF", reference_range: "0-Few Hyaline" },
-        { id: "UrineCrystals", label: "Crystals (Struvite, Calcium Oxalate, etc.)", unit: "/HPF", reference_range: "None/Few depending on type and pH" },
-        { id: "UrineBacteria", label: "Bacteria", unit: "/HPF", reference_range: "None/Few" },
-        { id: "UrineYeast", label: "Yeast", unit: "/HPF", reference_range: "None" },
-        { id: "UrineSperm", label: "Spermatozoa", unit: "/HPF", reference_range: "Variable" },
-        { id: "UrineMucus", label: "Mucus Threads", unit: "/LPF", reference_range: "None/Few" },
+        { id: "RBC", label: "Red Blood Cells", unit: "/HPF", refMin: "0", refMax: "5" },
+        { id: "WBC", label: "White Blood Cells", unit: "/HPF", refMin: "0", refMax: "5" },
+        { id: "EpithelialCells", label: "Epithelial Cells (Squamous, Transitional, Renal)", unit: "/HPF", reference_range: "Few" },
+        { id: "Casts", label: "Casts (Hyaline, Granular, Cellular, Waxy)", unit: "/LPF", reference_range: "0-Few Hyaline" },
+        { id: "Crystals", label: "Crystals (Struvite, Calcium Oxalate, etc.)", unit: "/HPF", reference_range: "None/Few depending on type and pH" },
+        { id: "Bacteria", label: "Bacteria", unit: "/HPF", reference_range: "None/Few" },
+        { id: "Yeast", label: "Yeast", unit: "/HPF", reference_range: "None" },
+        { id: "Sperm", label: "Spermatozoa", unit: "/HPF", reference_range: "Variable" },
+        { id: "Mucus", label: "Mucus Threads", unit: "/LPF", reference_range: "None/Few" },
         // Add other relevant urinalysis parameters
       ],
     };
