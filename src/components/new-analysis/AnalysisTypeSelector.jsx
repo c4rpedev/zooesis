@@ -8,8 +8,10 @@
 
     const analysisTypes = [
       { value: 'hemogram', labelKey: 'hemogram', icon: Stethoscope, disabled: false },
-      { value: 'biochemistry', labelKey: 'biochemistry', icon: TestTube2, disabled: true },
-      { value: 'urinalysis', labelKey: 'urinalysis', icon: Droplet, disabled: true },
+      { value: 'biochemistry', labelKey: 'biochemistry', icon: TestTube2, disabled: false },
+      { value: 'urinalysis', labelKey: 'urinalysis', icon: Droplet, disabled: false },
+      { value: 'unifiedanalysis', labelKey: 'unifiedanalysis', icon: Droplet, disabled: true },
+      { value: 'farmavet', labelKey: 'farmavet', icon: Droplet, disabled: true },
     ];
 
     const AnalysisTypeSelector = ({ selectedType, onTypeChange, error, itemVariants }) => {

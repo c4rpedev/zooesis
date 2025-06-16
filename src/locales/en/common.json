@@ -49,6 +49,8 @@
       "hemogram": "Hemogram",
       "biochemistry": "Biochemistry",
       "urinalysis": "Urinalysis",
+ "unifiedanalysis": "Unified Analysis",
+ "farmavet": "Farmavet",
       "languageSelectionError": "Language not selected. Please select a language for the application.",
       "languageRequiredForOcrError": "Language selection is required to perform OCR. Ensure a language is set.",
       "emailAddress": "Email Address",
@@ -87,6 +89,7 @@
       "ocrProcessingInfo": "We are currently processing the image using OCR. This may take a moment.",
       "ocrProcessingWait": "Please wait while we process the image.",
       "submitting": "Submitting...",
-      "selectLanguage": "Select Language"
+      "selectLanguage": "Select Language",
+      "enterValuePlaceholder": "Enter value"
     }
   

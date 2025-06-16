@@ -204,5 +204,9 @@
       "noInterpretationAvailable": "No hay datos de interpretación disponibles para este informe.",
       "complexObjectWarningTitle": "Estructura de Datos Compleja",
       "complexObjectWarningText": "Esta sección contiene datos complejos. Mostrando como JSON crudo."
+,"newUnifiedAnalysisTitle": "Nuevo Análisis Unificado"
+,"newUnifiedAnalysisDescription": "Sube un informe para análisis unificado."
+,"newFarmavetAnalysisTitle": "Nuevo Análisis Farmavet"
+,"newFarmavetAnalysisDescription": "Sube un informe para análisis Farmavet."
     }
   

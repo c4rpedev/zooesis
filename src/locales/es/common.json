@@ -86,5 +86,8 @@
  "ocrProcessingButton": "Procesando OCR",
  "ocrProcessingInfo": "Actualmente estamos procesando la imagen usando OCR. Esto puede tomar un momento.",
  "ocrProcessingWait": "Espere mientras procesamos la imagen.",
- "submitting": "Enviando..."
+ "submitting": "Enviando...",
+ "enterValuePlaceholder": "Introduce valor",
+ "unifiedanalysis": "Análisis Unificado",
+ "farmavet": "Farmavet"
 }
