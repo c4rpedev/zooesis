@@ -1,150 +1,184 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabaseClient.jsx';
-// Importa aquí cualquier otra dependencia necesaria para las acciones
-// import { someOtherHelper } from '@/lib/utils';
-
+// Add these imports - adjust paths according to your project structure
+// import { toast } from '@/components/ui/use-toast'; // or wherever your toast is
+// import { useTranslation } from 'react-i18next'; // or your translation method
 
 export const useAuthSessionManagement = (setUserState, setIsAdminState, setLoadingState, currentUser) => {
-
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
+  
+  // Add translation hook if using i18n
+  // const { t } = useTranslation();
+  
+  // Add ref to prevent duplicate listeners
+  const initialized = useRef(false);
 
-  // Define las acciones de autenticación directamente aquí o impórtalas y úsalas
+  // Helper function to check if session is valid
+  const isSessionValid = useCallback(async () => {
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      return !error && session !== null;
+    } catch {
+      return false;
+    }
+  }, []);
+
+  // Sync internal state with external state setters
+  useEffect(() => {
+    if (setUserState) setUserState(user);
+  }, [user, setUserState]);
+
+  useEffect(() => {
+    if (setIsAdminState) setIsAdminState(isAdmin);
+  }, [isAdmin, setIsAdminState]);
+
+  useEffect(() => {
+    if (setLoadingState) setLoadingState(loading);
+  }, [loading, setLoadingState]);
+
   const fetchUserProfile = useCallback(async (userId) => {
-    // Lógica para obtener el perfil del usuario de Supabase
-    const { data, error } = await supabase
+    try {
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('*, phone, country')
+        .eq('id', userId)
+        .single();
 
-      .from('user_profiles') // Asume que tienes una tabla 'profiles'
+      if (error) {
+        console.error("Error fetching user profile:", error);
+        setIsAdmin(false);
+        return null;
+      }
 
-      .select('*,  phone, country')
-      .eq('id', userId)
-      .single();
-
-    if (error) {
-      console.error("Error fetching user profile:", error);
-      setIsAdmin(false); // O maneja el error según tu lógica
+      // Set admin status based on profile
+      const adminStatus = data?.is_admin || false;
+      setIsAdmin(adminStatus);
+      return data;
+    } catch (error) {
+      console.error("Error in fetchUserProfile:", error);
+      setIsAdmin(false);
       return null;
     }
-
-    // Lógica para determinar si el usuario es administrador basada en el perfil
-    setIsAdmin(data?.is_admin || false);
-    return data;
-  }, [/* Dependencias si las hay */]); // Agrega dependencias si fetchUserProfile usa variables externas
+  }, []);
 
   const handleUserSession = useCallback(async (session) => {
     setLoading(true);
-    if (session?.user) {
-      const profile = await fetchUserProfile(session.user.id);
-      setUser({ ...session.user, profile });
-    } else {
+    try {
+      if (session?.user) {
+        const profile = await fetchUserProfile(session.user.id);
+        const userWithProfile = { ...session.user, profile };
+        setUser(userWithProfile);
+      } else {
+        setUser(null);
+        setIsAdmin(false);
+      }
+    } catch (error) {
+      console.error("Error handling user session:", error);
       setUser(null);
       setIsAdmin(false);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  }, [fetchUserProfile]); // Depende de fetchUserProfile
+  }, [fetchUserProfile]);
 
   useEffect(() => {
+    // Prevent duplicate initialization
+    if (initialized.current) return;
+    initialized.current = true;
+
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       handleUserSession(session);
     });
 
-    // Manejar la sesión inicial al cargar la página
+    // Handle initial session on page load
     supabase.auth.getSession().then(({ data: { session } }) => {
       handleUserSession(session);
     });
-
 
     return () => {
       authListener.subscription.unsubscribe();
     };
   }, [handleUserSession]);
 
-  // Define otras acciones de autenticación aquí
-
   const login = async (email, password) => {
-    if (setLoadingState) setLoadingState(true);
+    setLoading(true);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({ 
+        email, 
+        password 
+      });
+      
       if (error) throw error;
-      // if (data.user) {
-      //   const profile = await fetchUserProfile(data.user.id);
-      //   if (setUserState) setUserState({ ...data.user, profile });
-      //   toast({
-      //     title: t('loginSuccessTitle'),
-      //     description: t('loginSuccessDescription'),
-      //     variant: 'success',
-      //   });
-      // }
+      
+      if (data.user) {
+        const profile = await fetchUserProfile(data.user.id);
+        const userWithProfile = { ...data.user, profile };
+        setUser(userWithProfile);
+        
+        // Uncomment and adjust these lines based on your toast/translation setup
+        // toast({
+        //   title: t('loginSuccessTitle'),
+        //   description: t('loginSuccessDescription'),
+        //   variant: 'success',
+        // });
+      }
+      
       return { user: data.user, error: null };
     } catch (error) {
       console.error('Login error:', error);
-      toast({
-        title: t('loginErrorTitle'),
-        description: error.message || t('loginErrorDescription'),
-        variant: 'destructive',
-      });
+      
+      // Uncomment and adjust these lines based on your toast/translation setup
+      // toast({
+      //   title: t('loginErrorTitle'),
+      //   description: error.message || t('loginErrorDescription'),
+      //   variant: 'destructive',
+      // });
+      
       return { user: null, error };
     } finally {
-      if (setLoadingState) setLoadingState(false);
+      setLoading(false);
     }
   };
 
   const logout = useCallback(async () => {
-
-    // Lógica para cerrar sesión
     setLoading(true);
-    const { error } = await supabase.auth.signOut();
-    setLoading(false);
-    if (error) {
-      console.error("Error signing out:", error);
-      throw error;
+    try {
+      // Check if there's an active session before attempting logout
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session) {
+        const { error } = await supabase.auth.signOut();
+        if (error && error.message !== "Auth session missing!") {
+          console.error("Error signing out:", error);
+          throw error;
+        }
+      }
+      
+      // Always clear user state regardless of session status
+      setUser(null);
+      setIsAdmin(false);
+      
+      return { error: null };
+    } catch (error) {
+      console.error("Logout error:", error);
+      
+      // If the error is about missing session, still clear the state
+      if (error.message === "Auth session missing!" || error.code === "session_not_found") {
+        setUser(null);
+        setIsAdmin(false);
+        return { error: null }; // Treat as successful logout
+      }
+      
+      return { error };
+    } finally {
+      setLoading(false);
     }
   }, []);
 
-  // ... otras acciones (signUp, resetPassword, etc.)
-
-  // const signup = async (email, password, fullName) => {
-  //   if (setLoadingState) setLoadingState(true);
-  //   try {
-  //     const { data, error } = await supabase.auth.signUp({ email, password });
-  //     if (error) throw error;
-
-  //     if (data.user) {
-  //       const { error: profileError } = await supabase
-  //         .from('user_profiles')
-  //         .insert([{ id: data.user.id, full_name: fullName }]);
-
-  //       if (profileError) {
-  //         console.error('Error inserting user profile:', profileError);
-  //         // Potentially delete the user if profile insertion fails
-  //         // await supabase.auth.api.deleteUser(data.user.id); // Consider this implication carefully
-  //         throw profileError; 
-  //       }
-  //       // Optionally, trigger a login or session refresh here if needed
-  //       // For now, just returning the user data directly
-  //       return { user: data.user, error: null };
-  //     }
-  //     // if user is null, but no error, it might mean email confirmation is required
-  //     // depending on Supabase project settings.
-  //     // For this implementation, we'll treat it as a success needing confirmation.
-  //     // If specific handling for unconfirmed users is needed, it can be added here.
-  //     return { user: data.user, error: null }; 
-  //   } catch (error) {
-  //     console.error('Signup error:', error);
-  //     // Consider using a toast notification for errors, similar to login
-  //     // toast({
-  //     //   title: t('signupErrorTitle'),
-  //     //   description: error.message || t('signupErrorDescription'),
-  //     //   variant: 'destructive',
-  //     // });
-  //     return { user: null, error };
-  //   } finally {
-  //     if (setLoadingState) setLoadingState(false);
-  //   }
-  // };
   const signup = async (email, password, fullName, phone, country) => {
-    if (setLoadingState) setLoadingState(true);
+    setLoading(true);
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -157,33 +191,40 @@ export const useAuthSessionManagement = (setUserState, setIsAdminState, setLoadi
           },
         },
       });
+      
       if (error) throw error;
       
+      // Handle signup success/verification needed logic here
+      // Uncomment and adjust based on your toast/translation setup
       // if (data.user && data.user.identities && data.user.identities.length > 0) {
-      //    toast({
+      //   toast({
       //     title: t('signupSuccessTitle'),
       //     description: t('signupSuccessDescription'),
       //     variant: 'success',
       //   });
       // } else if (data.user && (!data.user.identities || data.user.identities.length === 0)) {
-      //    toast({
+      //   toast({
       //     title: t('signupNeedsVerificationTitle'),
       //     description: t('signupNeedsVerificationDescription'),
       //     variant: 'default',
       //     duration: 10000, 
       //   });
       // }
+      
       return { user: data.user, error: null };
     } catch (error) {
       console.error('Signup error:', error);
+      
+      // Uncomment and adjust based on your toast/translation setup
       // toast({
       //   title: t('signupErrorTitle'),
       //   description: error.message || t('signupErrorDescription'),
       //   variant: 'destructive',
       // });
+      
       return { user: null, error };
     } finally {
-      if (setLoadingState) setLoadingState(false);
+      setLoading(false);
     }
   };
   
@@ -193,9 +234,8 @@ export const useAuthSessionManagement = (setUserState, setIsAdminState, setLoadi
     loading,
     login,
     logout,
-    signup, // Add signup to returned object
-
-    fetchUserProfile, // Devuelve fetchUserProfile si es necesario fuera del hook
-    // ... devuelve otras acciones
+    signup,
+    fetchUserProfile,
+    isSessionValid,
   };
 };

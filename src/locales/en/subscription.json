@@ -25,14 +25,18 @@
       "planSelectedTitle": "Plan Selected",
       "planSelectedDescriptionPrefix": "You've selected the",
       "paymentIntegrationComingSoon": "Payment processing will be integrated soon.",
-      "analysisLimitReachedTitle": "Analysis Limit Reached",
-      "analysisLimitReachedDescription": "You have reached the 10 analyses limit for the Free Plan. Please upgrade to continue.",
+ "analysisLimitReachedTitle": "Analysis Limit Reached",
+ "analysisLimitReachedDescription": "You have reached the 10 analyses limit for the Free Plan. Please upgrade to continue.",
       "upgradePlan": "Upgrade Plan",
       "subscriptionDetailsTitle": "Subscription Details",
-      "currentPlanLabel": "Current Plan:",
-      "analysesUsedLabel": "Analyses Used This Period:",
-      "analysesLeftLabel": "Analyses Left This Period:",
-      "renewsOnLabel": "Renews On:",
-      "manageSubscriptionButton": "Manage Subscription"
+ "currentPlanLabel": "Current Plan",
+ "analysesUsageLabel": "Analyses Usage",
+ "unlimitedAnalyses": "Unlimited",
+ "analysesUsedLabel": "Analyses Used",
+ "analysesLeftLabel": "Analyses Left",
+ "renewsOnLabel": "Renews/Expires On",
+ "notApplicableShort": "N/A",
+ "upgradePlanButton": "Upgrade Plan",
+ "manageSubscriptionButton": "Manage Subscription / View Plans"
     }
   

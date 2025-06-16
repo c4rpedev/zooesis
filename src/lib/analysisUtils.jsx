@@ -45,6 +45,7 @@
         { id: "Chloride", label: "Chloride (Cl)", unit: "mEq/L", refMin: "98", refMax: "106" },
         { id: "Amylase", label: "Amylase", unit: "U/L", refMin: "25", refMax: "125" },
         { id: "Lipase", label: "Lipase", unit: "U/L", refMin: "10", refMax: "60" },
+        { id: "Fructosamine", label: "Fructosamine", unit: "mcmol/l", refMin: "190", refMax: "370" },
         // Add other relevant biochemistry parameters
       ],
       urinalysis: [

@@ -14,6 +14,9 @@
       hemogram: { titleKey: 'newHemogramAnalysisTitle', descriptionKey: 'newHemogramAnalysisDescription', icon: Stethoscope },
       biochemistry: { titleKey: 'newBiochemistryAnalysisTitle', descriptionKey: 'newBiochemistryAnalysisDescription', icon: TestTube2 },
       urinalysis: { titleKey: 'newUrinalysisAnalysisTitle', descriptionKey: 'newUrinalysisAnalysisDescription', icon: Droplet },
+      unifiedanalysis: { titleKey: 'newUnifiedAnalysisTitle', descriptionKey: 'newUnifiedAnalysisDescription', icon: Droplet }, 
+      farmavet: { titleKey: 'newFarmavetAnalysisTitle', descriptionKey: 'newFarmavetAnalysisDescription', icon: Droplet }, 
+
     };
 
     const itemVariants = {

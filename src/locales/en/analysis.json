@@ -204,5 +204,10 @@
       "noInterpretationAvailable": "No interpretation data available for this report.", 
       "complexObjectWarningTitle": "Complex Data Structure",
       "complexObjectWarningText": "This section contains complex data. Displaying as raw JSON."
+
+      ,"newUnifiedAnalysisTitle": "New Unified Analysis"
+      ,"newUnifiedAnalysisDescription": "Upload a report for unified analysis."
+      ,"newFarmavetAnalysisTitle": "New Farmavet Analysis"
+      ,"newFarmavetAnalysisDescription": "Upload a report for Farmavet analysis."
     }
   
