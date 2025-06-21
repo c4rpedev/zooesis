@@ -8,6 +8,8 @@
 
 
     const ReportHeader = ({ analysisId, analysisType, patientName, reportDate, onPrint, onDownloadPdf, isDownloadingPdf }) => {
+    
+
       const navigate = useNavigate();
 
       const { t } = useTranslation(); // Use the translation hook
@@ -39,15 +41,15 @@
               </CardDescription>
             </div>
             <div className="flex space-x-2 print:hidden">
-              <Button variant="outline" size="icon" onClick={() => navigate(`/review/${analysisId}`)} title="Edit Values">
+              <Button variant="outline" size="icon" onClick={() => navigate(`/review/${analysisType}/${analysisId}`)} title="Edit Values">
                 <Edit className="h-5 w-5"/>
               </Button>
               <Button variant="outline" size="icon" onClick={onPrint} title="Print Report">
                 <Printer className="h-5 w-5"/>
               </Button>
-              <Button variant="outline" size="icon" onClick={onDownloadPdf} title="Download PDF" disabled={isDownloadingPdf}>
+              {/* <Button variant="outline" size="icon" onClick={onDownloadPdf} title="Download PDF" disabled={isDownloadingPdf}>
                 {isDownloadingPdf ? <Loader2 className="h-5 w-5 animate-spin" /> : <Download className="h-5 w-5"/>}
-              </Button>
+              </Button> */}
             </div>
           </div>
         </CardHeader>

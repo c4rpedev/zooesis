@@ -151,7 +151,7 @@
                   </div>
                   <div className="pt-3">
                     <Button asChild className="w-full md:w-auto shadow-md hover:shadow-lg transition-shadow">
-                      <Link to={`/history/${recentAnalysis.id}`}>
+                      <Link to={`/report/${recentAnalysis.type}/${recentAnalysis.id}`}>
                         <FileText className="mr-2 h-4 w-4" /> {t('viewReportButton')}
                       </Link>
                     </Button>

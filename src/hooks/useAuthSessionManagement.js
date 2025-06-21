@@ -63,7 +63,21 @@ export const useAuthSessionManagement = (setUserState, setIsAdminState, setLoadi
     }
   }, []);
 
-  const handleUserSession = useCallback(async (session) => {
+  const handleUserSession = useCallback(async (session, event) => {
+    // Access the current user state directly for comparison
+    // Note: 'user' from useState is in scope here due to closure
+    if (
+      event === 'TOKEN_REFRESHED' &&
+      session?.user &&
+      user?.id === session.user.id
+    ) {
+      // Update the user state with the new session user object but retain existing profile
+      // This ensures the user object has the latest session details (like new token info)
+      // without a full reload/profile fetch.
+      setUser(currentUser => ({ ...session.user, profile: currentUser?.profile }));
+      setLoading(false); // Ensure loading is false
+      return;
+    }
     setLoading(true);
     try {
       if (session?.user) {
@@ -81,15 +95,15 @@ export const useAuthSessionManagement = (setUserState, setIsAdminState, setLoadi
     } finally {
       setLoading(false);
     }
-  }, [fetchUserProfile]);
+  }, [fetchUserProfile, user]); // Added user to dependency array
 
   useEffect(() => {
     // Prevent duplicate initialization
     if (initialized.current) return;
     initialized.current = true;
 
-    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
-      handleUserSession(session);
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      handleUserSession(session, event);
     });
 
     // Handle initial session on page load

@@ -90,6 +90,7 @@
       "ocrProcessingWait": "Please wait while we process the image.",
       "submitting": "Submitting...",
       "selectLanguage": "Select Language",
-      "enterValuePlaceholder": "Enter value"
+      "enterValuePlaceholder": "Enter value",
+ "installAppMessage": "Install Zooesis App for a better experience!"
     }
   
