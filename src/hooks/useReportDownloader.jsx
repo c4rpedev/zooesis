@@ -16,7 +16,7 @@
           return;
         }
         setIsDownloading(true);
-        toast({ title: t('downloadStartingTitle'), description: t('downloadStartingMessage') });
+        toast({ title: t('pdfDownloadStartingTitle'), description: t('pdfDownloadStartingDescription') });
 
         await new Promise(resolve => setTimeout(resolve, 300));
 
@@ -59,7 +59,7 @@
 
           pdf.addImage(imgData, 'PNG', xOffset, yOffset, newImgWidth, newImgHeight);
           pdf.save(`${analysisData.patient_name || 'Report'}_${analysisType}_${analysisData.id.substring(0,8)}.pdf`);
-          toast({ title: t('downloadCompletedTitle'), description: t('downloadCompletedMessage') });
+          toast({ title: t('pdfDownloadSuccessTitle'), description: t('pdfDownloadSuccessDescription') });
         } catch (e) {
           console.error("Error generating PDF:", e);
           toast({ title: t('errorGeneratingPdf'), description: e.message, variant: 'destructive'});

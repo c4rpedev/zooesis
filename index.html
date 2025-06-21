@@ -9,8 +9,36 @@
 			<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://uyxbupyjmyvulmpjtyum.supabase.co https://js.stripe.com https://js.stripe.com/basil/stripe.js https://conversations-widget.brevo.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://uyxbupyjmyvulmpjtyum.supabase.co https://storage.googleapis.com https://avatar.vercel.sh; font-src 'self'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.googleapis.com https://generativelanguage.googleapis.com; frame-src 'self' https://js.stripe.com https://conversations-widget.brevo.com data:; object-src; base-uri 'self';">
 
 			<title>Zooesis</title>
-
+	<!-- CSS para reposicionar el chat widget -->
+    <style>
+        /* Mover el chat widget hacia arriba */
+        #brevo-conversations {
+            bottom: 100px !important; /* Ajusta este valor según necesites */
+        }
+        
+        /* Alternativa más específica si la anterior no funciona */
+        [id*="brevo"], [class*="brevo"], [data-brevo] {
+            bottom: 100px !important;
+        }
+        
+        /* Para el iframe del widget si es necesario */
+        iframe[src*="brevo"] {
+            bottom: 100px !important;
+        }
+    </style>
 			<!-- Brevo Conversations {literal} -->
+<!-- <script>
+    (function(d, w, c) {
+        w.BrevoConversationsID = '6818ea905c919699780edeb4';
+        w[c] = w[c] || function() {
+            (w[c].q = w[c].q || []).push(arguments);
+        };
+        var s = d.createElement('script');
+        s.async = true;
+        s.src = 'https://conversations-widget.brevo.com/brevo-conversations.js';
+        if (d.head) d.head.appendChild(s);
+    })(document, window, 'BrevoConversations');
+</script> -->
 <script>
     (function(d, w, c) {
         w.BrevoConversationsID = '6818ea905c919699780edeb4';
@@ -21,6 +49,16 @@
         s.async = true;
         s.src = 'https://conversations-widget.brevo.com/brevo-conversations.js';
         if (d.head) d.head.appendChild(s);
+        
+        // Código adicional para reposicionar después de que se cargue
+        s.onload = function() {
+            setTimeout(function() {
+                var chatWidget = document.querySelector('[id*="brevo"], [class*="brevo"]');
+                if (chatWidget) {
+                    chatWidget.style.bottom = '100px';
+                }
+            }, 1000);
+        };
     })(document, window, 'BrevoConversations');
 </script>
 <!-- /Brevo Conversations {/literal} -->

@@ -16,11 +16,17 @@
       analysisParameters,
       userFullName,
     }) => {
+     
       const { t } = useTranslation();
 
       if (!analysisData || !interpretedValues) {
         return <p>{t('analysisDataUnavailable')}</p>;
       }
+
+      const handlePrint = () => {
+        console.log('print')
+        window.print();
+      };
       
       const patientInfo = {
         name: analysisData.patient_name,
@@ -39,7 +45,9 @@
           <div ref={reportRef} id="report-content" className="p-6 md:p-10 print-report-styles">
             <ReportHeader
               analysisType={analysisData.analysis_type}
+              analysisId={analysisData.id}
               reportDate={analysisData.completed_at || analysisData.reviewed_at || analysisData.created_at}
+              onPrint={handlePrint} //
             />
             <PatientSummary
               patientInfo={patientInfo}

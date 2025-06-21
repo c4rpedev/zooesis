@@ -10,6 +10,7 @@
     import PageLoader from '@/components/layout/PageLoader.jsx'; 
     import { getPageTitle } from '@/lib/pageTitleUtils.jsx';
     import { useNavItems } from '@/hooks/useNavItems.jsx';
+    import InstallPWANotification from '@/components/common/InstallPWANotification.jsx';
 
 
     const Layout = () => {
@@ -17,6 +18,7 @@
       const { user, loading: authLoading, isAdmin } = useAuth();
       const { t, currentLanguage } = useTranslation();
       const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+      const [showInstallPrompt, setShowInstallPrompt] = React.useState(true);
 
       const { mainNavItems, bottomNavItems } = useNavItems();
       const allAppNavItems = React.useMemo(() => [...mainNavItems, ...bottomNavItems], [mainNavItems, bottomNavItems]);
@@ -69,6 +71,9 @@
               </motion.div>
             </main>
           </div>
+          {user && showInstallPrompt && !isAuthPage && !isLandingPage && (
+            <InstallPWANotification onClose={() => setShowInstallPrompt(false)} />
+          )}
         </div>
       );
     };

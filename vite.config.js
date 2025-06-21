@@ -1,6 +1,7 @@
 import path from 'node:path';
 import react from '@vitejs/plugin-react';
 import { createLogger, defineConfig } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
 
 const configHorizonsViteErrorHandler = `
 const observer = new MutationObserver((mutations) => {
@@ -183,7 +184,39 @@ logger.error = (msg, options) => {
 
 export default defineConfig({
 	customLogger: logger,
-	plugins: [react(), addTransformIndexHtml],
+	plugins: [react(), addTransformIndexHtml,
+		VitePWA({
+			registerType: 'autoUpdate',
+			includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'maskable-icon-512x512.png'],
+			manifest: {
+				name: "Zooesis App",
+				short_name: "Zooesis",
+				description: "The Zooesis application.",
+				start_url: "/",
+				display: "standalone",
+				background_color: "#ffffff",
+				theme_color: "#000000",
+				icons: [
+					{
+						src: "192.png",
+						sizes: "192x192",
+						type: "image/png"
+					},
+					{
+						src: "512.png",
+						sizes: "512x512",
+						type: "image/png"
+					},
+					{
+						src: "512.png",
+						sizes: "512x512",
+						type: "image/png",
+						purpose: "maskable"
+					}
+				]
+			}
+		})
+	],
 	server: {
 		cors: true,
 		headers: {
