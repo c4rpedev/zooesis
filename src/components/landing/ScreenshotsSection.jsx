@@ -5,8 +5,8 @@
 
     const ScreenshotsSection = () => {
       const { t } = useTranslation();
-      const image1Src = "https://uyxbupyjmyvulmpjtyum.supabase.co/storage/v1/object/public/landing-images//screen_mock_2.png";
-      const image2Src = "https://uyxbupyjmyvulmpjtyum.supabase.co/storage/v1/object/public/landing-images//screen_mock.png";
+      const image1Src = "https://uyxbupyjmyvulmpjtyum.supabase.co/storage/v1/object/public/landing-images//2.png";
+      const image2Src = "https://uyxbupyjmyvulmpjtyum.supabase.co/storage/v1/object/public/landing-images//1.png";
 
       return (
         <section className="py-16 md:py-24 bg-white dark:bg-slate-850">
