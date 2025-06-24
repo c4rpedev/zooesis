@@ -5,6 +5,7 @@
     import WhatIsZooesisSection from '@/components/landing/WhatIsZooesisSection.jsx';
     import BenefitsSection from '@/components/landing/BenefitsSection.jsx';
     import GrowingSection from '@/components/landing/GrowingSection.jsx';
+    import PricingSection from '@/components/landing/PricingSection.jsx'; // Adde
     import ScreenshotsSection from '@/components/landing/ScreenshotsSection.jsx';
     import RegistrationSection from '@/components/landing/RegistrationSection.jsx';
     import TrustSection from '@/components/landing/TrustSection.jsx';
@@ -19,7 +20,7 @@
           <ScreenshotsSection />
           <BenefitsSection />
           {/* <GrowingSection /> */}
-         
+          <PricingSection /> 
           <RegistrationSection />
           <TrustSection />
           <LandingPageFooter />

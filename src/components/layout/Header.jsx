@@ -11,7 +11,7 @@
       DropdownMenuSeparator,
       DropdownMenuTrigger,
     } from '@/components/ui/dropdown-menu.jsx';
-    import { Menu, Sun, Moon, LogOut, User, Shield, Globe } from 'lucide-react';
+    import { Menu, Sun, Moon, LogOut, User, Shield, Globe, Home } from 'lucide-react';
     import { useAuth } from '@/contexts/AuthContext.jsx';
     import { useTranslation } from '@/contexts/TranslationContext.jsx';
     import { getPageTitle } from '@/lib/pageTitleUtils.jsx';
@@ -56,6 +56,7 @@
           <div className="flex items-center space-x-3">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
+                
                 <Button variant="ghost" size="icon" title={t('changeLanguage')}>
                   <Globe className="h-5 w-5" />
                   <span className="sr-only">{t('changeLanguage')}</span>
@@ -75,6 +76,11 @@
             <Button variant="ghost" size="icon" onClick={toggleTheme} title={theme === 'dark' ? t('switchToLightMode') : t('switchToDarkMode')}>
               {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               <span className="sr-only">{theme === 'dark' ? t('switchToLightMode') : t('switchToDarkMode')}</span>
+            </Button>
+
+            <Button variant="ghost" size="icon"  >
+            <Link to="/"><Home className="h-5 w-5" /></Link>
+            
             </Button>
 
             {user && (

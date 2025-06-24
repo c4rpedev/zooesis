@@ -50,7 +50,7 @@ const InstallPWANotification = ({ onClose }) => {
     setDeferredPrompt(null);
     if (onClose) onClose(); // Also call onClose if installed via notification
   };
-
+  
   const handleCloseClick = () => {
     setIsVisible(false);
     if (onClose) {

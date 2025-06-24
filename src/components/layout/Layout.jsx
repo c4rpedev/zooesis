@@ -71,7 +71,7 @@
               </motion.div>
             </main>
           </div>
-          {user && showInstallPrompt && !isAuthPage && !isLandingPage && (
+          {showInstallPrompt && (
             <InstallPWANotification onClose={() => setShowInstallPrompt(false)} />
           )}
         </div>

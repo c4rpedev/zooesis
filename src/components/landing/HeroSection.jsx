@@ -64,7 +64,7 @@ import React from 'react';
             <motion.div className="w-full md:w-1/2 flex justify-center md:justify-end" variants={itemVariants}> {/* Added variants to image container */}
               {/* TODO: Replace with your desired image */}
               <img
-                src="https://uyxbupyjmyvulmpjtyum.supabase.co/storage/v1/object/public/landing-images//hero_image%20(1).png" // Placeholder image URL
+                src="https://uyxbupyjmyvulmpjtyum.supabase.co/storage/v1/object/public/landing-images//landing_image.png" // Placeholder image URL
                 alt="Hero Section Image" // Placeholder alt text
                 className="w-full max-w-md md:max-w-xl lg:max-w-2xl h-auto rounded-lg" // Modified styling for the image to make it bigger
               />
