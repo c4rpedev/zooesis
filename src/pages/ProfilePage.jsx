@@ -1,40 +1,56 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // For the manage subscription button
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext.jsx';
-import { supabase } from '@/lib/supabaseClient.jsx'; // For profile updates, if not handled by AuthContext's updateUser
+import { supabase } from '@/lib/supabaseClient.jsx';
 import { useToast } from '@/components/ui/use-toast.jsx';
 import { Button } from '@/components/ui/button.jsx';
 import { Input } from '@/components/ui/input.jsx';
 import { Label } from '@/components/ui/label.jsx';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card.jsx';
-import { UserCircle, Mail, Edit3, Save, Loader2, LockKeyhole as ShieldKeyhole, Briefcase, BarChart2, CalendarClock, Check, AlertTriangle } from 'lucide-react'; // Added icons
+import { 
+  UserCircle, Mail, Edit3, Save, Loader2, Lock, Briefcase, 
+  Check, AlertTriangle, XCircle, CalendarClock, Info
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTranslation } from '@/contexts/TranslationContext.jsx';
-import { getPlanDetails } from '@/lib/planConfig.js'; // Ensure this path is correct
+import { getPlanDetails } from '@/lib/planConfig.js';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog.jsx";
 
 const ProfilePage = () => {
-  const { user, updateUser, loading: authLoading, refreshUserProfile } = useAuth(); // Assuming refreshUserProfile or similar might exist
+  const { user, updateUser, loading: authLoading, refreshUserProfile } = useAuth();
   const { toast } = useToast();
   const { t, language: currentLanguage } = useTranslation();
   const navigate = useNavigate();
 
-  // State for editable fields (full_name, avatar_url)
   const [fullName, setFullName] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
-  // State for password change
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   
   const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(false); // For general form submission
-  const [profileDataLoading, setProfileDataLoading] = useState(true); // For initial load of profile fields
+  const [loading, setLoading] = useState(false); // For profile/password updates
+  const [profileDataLoading, setProfileDataLoading] = useState(true);
+  const [isCancelingSubscription, setIsCancelingSubscription] = useState(false);
 
-  // Derived state for subscription details (read directly from user.profile)
-  const subscriptionPlanId = user?.profile?.subscription_plan_id;
-  const analysisCount = user?.profile?.analysis_count ?? 0; // Default to 0 if null/undefined
-  const currentPeriodEnd = user?.profile?.current_period_end;
+  // Subscription details from user profile
+  const activeStripeSubscriptionId = user?.profile?.active_stripe_subscription_id;
+  const subscriptionStatus = user?.profile?.subscription_status; // e.g., 'active', 'trialing', 'canceled', 'pending_cancellation'
+  const subscriptionPlanId = user?.profile?.subscription_plan_id; // Stripe Price ID or 'free'
+  const analysisCount = user?.profile?.analysis_count ?? 0;
+  const currentPeriodEnd = user?.profile?.current_period_end ? new Date(user.profile.current_period_end) : null;
+  
   const planDetails = subscriptionPlanId ? getPlanDetails(subscriptionPlanId) : getPlanDetails('free');
-
+  const isPaidSubscription = subscriptionPlanId && subscriptionPlanId !== 'free';
 
   useEffect(() => {
     // If AuthContext provides these, direct fetching here might not be needed
@@ -56,6 +72,56 @@ const ProfilePage = () => {
     }
   }, [user, authLoading]);
 
+  const handleCancelSubscription = async () => {
+    if (!activeStripeSubscriptionId) {
+      toast({
+        title: t('errorTitle', { defaultValue: "Error" }),
+        description: t('cancelSubErrorNoId', { defaultValue: "No active subscription ID found to cancel." }),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsCancelingSubscription(true);
+    try {
+      // Ensure the function name matches the one deployed in Supabase
+      const { data, error: functionError } = await supabase.functions.invoke('cancel-stripe-subscription');
+
+      if (functionError) {
+        console.error("Supabase function invocation error:", functionError);
+        // Attempt to get more specific error from function context if available
+        const message = functionError.context?.errorMessage || functionError.message || t('cancelSubErrorSupabase', { defaultValue: "Could not reach cancellation service." });
+        throw new Error(message);
+      }
+
+      // Check for errors returned in the data payload from the function itself
+      if (data && data.error) {
+        console.error("Error from cancel-stripe-subscription function:", data.error);
+        throw new Error(data.error);
+      }
+      
+      toast({
+        title: t('cancelSubSuccessTitle', { defaultValue: "Subscription Cancellation Initiated" }),
+        description: data?.message || t('cancelSubSuccessDescription', { defaultValue: "Your subscription will be canceled at the end of your current billing period. You'll retain access until then." }),
+        variant: "success",
+        duration: 9000,
+      });
+
+      if (typeof refreshUserProfile === 'function') {
+        await refreshUserProfile(); // Refresh user data to update UI
+      }
+
+    } catch (error) {
+      console.error("Error canceling subscription:", error);
+      toast({
+        title: t('cancelSubErrorTitle', { defaultValue: "Cancellation Failed" }),
+        description: error.message || t('cancelSubErrorGeneral', { defaultValue: "An unexpected error occurred while trying to cancel your subscription." }),
+        variant: "destructive",
+      });
+    } finally {
+      setIsCancelingSubscription(false);
+    }
+  };
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
@@ -219,7 +285,7 @@ const ProfilePage = () => {
             {/* Password Change Form */}
             <form onSubmit={handlePasswordUpdate} className="space-y-6">
                 {/* ... (newPassword, confirmPassword inputs and update button - same as your code) ... */}
-                 <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200 flex items-center"><ShieldKeyhole className="mr-2 h-6 w-6 text-primary"/>{t('changePassword')}</h3>
+                 <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200 flex items-center"><Lock className="mr-2 h-6 w-6 text-primary"/>{t('changePassword')}</h3>
                 <div className="space-y-2">
                   <Label htmlFor="newPassword">{t('newPassword')}</Label>
                   <Input id="newPassword" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="••••••••" className="h-11" />
@@ -243,53 +309,131 @@ const ProfilePage = () => {
           </h3>
           
           <div className="w-full space-y-3 text-sm">
+            {/* Current Plan */}
             <div className="flex justify-between">
               <span className="text-slate-600 dark:text-slate-300 font-medium">{t('currentPlanLabel', {defaultValue: "Current Plan"})}:</span>
               <span className="text-slate-800 dark:text-slate-100 font-semibold">{t(planDetails.nameKey, {defaultValue: "N/A"})}</span>
             </div>
-            
-            {planDetails.limit === Infinity ? (
-              <div className="flex justify-between">
-                <span className="text-slate-600 dark:text-slate-300 font-medium">{t('analysesUsageLabel', {defaultValue: "Analyses Usage"})}:</span>
-                <span className="text-green-500 flex items-center">
-                  <Check className="mr-1 h-4 w-4"/> {t('unlimitedAnalyses', {defaultValue: "Unlimited"})}
-                </span>
-              </div>
-            ) : (
-              <>
-                <div className="flex justify-between">
-                  <span className="text-slate-600 dark:text-slate-300 font-medium">{t('analysesUsedLabel', {defaultValue: "Analyses Used"})}:</span>
-                  <span className="text-slate-800 dark:text-slate-100">{analysisCount} / {planDetails.limit}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-600 dark:text-slate-300 font-medium">{t('analysesLeftLabel', {defaultValue: "Analyses Left"})}:</span>
-                  <span className="text-slate-800 dark:text-slate-100">{planDetails.limit - analysisCount}</span>
-                </div>
-              </>
-            )}
 
-            {subscriptionPlanId !== 'free' && currentPeriodEnd ? (
+            {/* Subscription Status */}
+            <div className="flex justify-between">
+              <span className="text-slate-600 dark:text-slate-300 font-medium">{t('subscriptionStatusLabel', {defaultValue: "Status"})}:</span>
+              <span className={`font-semibold ${
+                subscriptionStatus === 'active' ? 'text-green-500' :
+                subscriptionStatus === 'trialing' ? 'text-blue-500' :
+                subscriptionStatus === 'canceled' ? 'text-red-500' :
+                subscriptionStatus === 'pending_cancellation' ? 'text-yellow-600' :
+                'text-slate-800 dark:text-slate-100'
+              }`}>
+                {t(`status${subscriptionStatus ? subscriptionStatus.charAt(0).toUpperCase() + subscriptionStatus.slice(1) : 'Unknown'}`, {defaultValue: subscriptionStatus || "Unknown"})}
+              </span>
+            </div>
+            
+            {/* Analyses Usage */}
+            {isPaidSubscription || subscriptionPlanId === 'free' ? ( // Show for free plan too
+                planDetails.limit === Infinity ? (
+                <div className="flex justify-between">
+                    <span className="text-slate-600 dark:text-slate-300 font-medium">{t('analysesUsageLabel', {defaultValue: "Analyses Usage"})}:</span>
+                    <span className="text-green-500 flex items-center">
+                    <Check className="mr-1 h-4 w-4"/> {t('unlimitedAnalyses', {defaultValue: "Unlimited"})}
+                    </span>
+                </div>
+                ) : (
+                <>
+                    <div className="flex justify-between">
+                    <span className="text-slate-600 dark:text-slate-300 font-medium">{t('analysesUsedLabel', {defaultValue: "Analyses Used"})}:</span>
+                    <span className="text-slate-800 dark:text-slate-100">{analysisCount} / {planDetails.limit}</span>
+                    </div>
+                    <div className="flex justify-between">
+                    <span className="text-slate-600 dark:text-slate-300 font-medium">{t('analysesLeftLabel', {defaultValue: "Analyses Left"})}:</span>
+                    <span className="text-slate-800 dark:text-slate-100">{planDetails.limit - analysisCount}</span>
+                    </div>
+                </>
+                )
+            ) : null}
+
+            {/* Renews/Expires On */}
+            {currentPeriodEnd && (subscriptionStatus === 'active' || subscriptionStatus === 'trialing' || subscriptionStatus === 'pending_cancellation') ? (
               <div className="flex justify-between">
-                <span className="text-slate-600 dark:text-slate-300 font-medium">{t('renewsOnLabel', {defaultValue: "Renews/Expires On"})}:</span>
+                <span className="text-slate-600 dark:text-slate-300 font-medium">
+                  {subscriptionStatus === 'pending_cancellation' ? t('accessValidUntilLabel', {defaultValue: "Access valid until"}) : t('renewsOnLabel', {defaultValue: "Renews on"})}:
+                </span>
                 <span className="text-slate-800 dark:text-slate-100">
-                  {new Date(currentPeriodEnd).toLocaleDateString(currentLanguage || 'en', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  {currentPeriodEnd.toLocaleDateString(currentLanguage || 'en', { year: 'numeric', month: 'long', day: 'numeric' })}
                 </span>
               </div>
-            ) : null}
-             {subscriptionPlanId === 'free' && (
-                <div className="flex justify-between">
+            ) : subscriptionPlanId === 'free' ? (
+                 <div className="flex justify-between">
                     <span className="text-slate-600 dark:text-slate-300 font-medium">{t('renewsOnLabel', {defaultValue: "Renews/Expires On"})}:</span>
                     <span className="text-slate-800 dark:text-slate-100">{t('notApplicableShort', {defaultValue: "N/A"})}</span>
                 </div>
+            ) : null}
+
+            {subscriptionStatus === 'pending_cancellation' && currentPeriodEnd && (
+              <div className="mt-2 p-3 bg-yellow-100 dark:bg-yellow-700/30 border border-yellow-300 dark:border-yellow-600 rounded-md text-yellow-700 dark:text-yellow-200 text-xs flex items-start">
+                <Info className="h-4 w-4 mr-2 flex-shrink-0 mt-0.5" />
+                {t('pendingCancellationInfo', {date: currentPeriodEnd.toLocaleDateString(currentLanguage || 'en', { year: 'numeric', month: 'long', day: 'numeric' }), defaultValue: `Your subscription is set to cancel and will remain active until ${currentPeriodEnd.toLocaleDateString(currentLanguage || 'en', { year: 'numeric', month: 'long', day: 'numeric' })}.`})}
+              </div>
+            )}
+             {subscriptionStatus === 'canceled' && (
+              <div className="mt-2 p-3 bg-red-100 dark:bg-red-700/30 border border-red-300 dark:border-red-600 rounded-md text-red-700 dark:text-red-200 text-xs flex items-start">
+                <XCircle className="h-4 w-4 mr-2 flex-shrink-0 mt-0.5" />
+                {t('subscriptionCanceledInfo', {defaultValue: "Your subscription has been canceled."})}
+              </div>
+            )}
+
+          </div>
+          
+          <div className="w-full space-y-2 mt-4">
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/subscription')}
+              className="w-full border-primary text-primary hover:bg-primary/5 hover:text-primary"
+            >
+              {isPaidSubscription && subscriptionStatus !== 'canceled' ? t('manageSubscriptionButton', {defaultValue: "Manage Subscription / View Plans"}) : t('viewSubscriptionPlansButton', {defaultValue: "View Subscription Plans"})}
+            </Button>
+
+            {isPaidSubscription && (subscriptionStatus === 'active' || subscriptionStatus === 'trialing') && activeStripeSubscriptionId && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button 
+                    variant="destructive" 
+                    className="w-full"
+                    disabled={isCancelingSubscription}
+                  >
+                    {isCancelingSubscription ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <XCircle className="mr-2 h-4 w-4" />
+                    )}
+                    {t('cancelSubscriptionButton', {defaultValue: "Cancel Subscription"})}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{t('confirmCancelSubscriptionTitle', {defaultValue: "Are you sure?"})}</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {t('confirmCancelSubscriptionDescription', {date: currentPeriodEnd ? currentPeriodEnd.toLocaleDateString(currentLanguage || 'en', { year: 'numeric', month: 'long', day: 'numeric' }) : 'the end of the current period', defaultValue: `This will cancel your subscription at the end of your current billing period (${currentPeriodEnd ? currentPeriodEnd.toLocaleDateString(currentLanguage || 'en', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Unknown Date'}). You will retain access to your current plan's features until then.`})}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t('alertDialogCancel', {defaultValue: "Keep Subscription"})}</AlertDialogCancel>
+                    <AlertDialogAction 
+                      onClick={handleCancelSubscription}
+                      className="bg-destructive hover:bg-destructive/90"
+                      disabled={isCancelingSubscription}
+                    >
+                       {isCancelingSubscription ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                       ) : null}
+                      {t('alertDialogConfirmCancel', {defaultValue: "Yes, Cancel Subscription"})}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             )}
           </div>
-          <Button 
-            variant="outline" 
-            onClick={() => navigate('/subscription')}
-            className="w-full mt-4 border-primary text-primary hover:bg-primary/5 hover:text-primary"
-          >
-            {subscriptionPlanId === 'free' ? t('upgradePlanButton', {defaultValue: "Upgrade Plan"}) : t('manageSubscriptionButton', {defaultValue: "Manage Subscription / View Plans"})}
-          </Button>
+
         </CardFooter>
       </Card>
     </motion.div>
