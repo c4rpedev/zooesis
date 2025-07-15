@@ -44,7 +44,7 @@ import React from 'react';
             {/* Text Content */}
             <motion.div className="w-full md:w-1/2 text-center md:text-left space-y-6" variants={itemVariants}> {/* Added variants to text container */}
               <motion.h1
-                className="text-5xl md:text-7xl font-extrabold text-slate-800 dark:text-white tracking-tight"
+                className="text-5xl md:text-6xl font-extrabold text-slate-800 dark:text-white tracking-tight"
               >
                 {t('landingHeroTitle')} <span className="text-primary">{t('landingHeroTitleHighlight')}</span>
               </motion.h1>
@@ -54,9 +54,10 @@ import React from 'react';
                 {t('landingHeroSubtitle')}
               </motion.p>
               <motion.div>
-                <Button size="lg" asChild className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-10 py-7 rounded-full shadow-lg transform hover:scale-105 transition-transform">
+                <Button size="lg" asChild className="mt-10 bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-10 py-7 rounded-full shadow-lg transform hover:scale-105 transition-transform">
                   <Link to="/signup">{t('landingHeroCTA')}</Link>
                 </Button>
+                <p className="mt-4 text-slate-500 dark:text-slate-300 text-sm md:text-base">{t('landingHeroCTAInfo')}</p>
               </motion.div>
             </motion.div>
 

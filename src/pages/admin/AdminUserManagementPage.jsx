@@ -27,46 +27,26 @@
       const { toast } = useToast();
       const { t } = useTranslation();
 
-      const fetchUserAuthDetails = useCallback(async (userId) => {
-        try {
-          const { data: authUser, error: authError } = await supabase.auth.admin.getUserById(userId);
-          if (authError) {
-            console.error(`Error fetching auth user ${userId}:`, authError.message);
-            return { email: t('emailNotFound'), last_sign_in_at: t('unknown'), created_at: t('unknown') };
-          }
-          return { 
-            email: authUser.user?.email || t('emailNotFound'),
-            last_sign_in_at: authUser.user?.last_sign_in_at ? new Date(authUser.user.last_sign_in_at).toLocaleDateString() : t('never'),
-            created_at: authUser.user?.created_at ? new Date(authUser.user.created_at).toLocaleDateString() : t('unknown')
-          };
-        } catch (error) {
-          console.error(`Exception fetching auth user ${userId}:`, error.message);
-          return { email: t('error'), last_sign_in_at: t('error'), created_at: t('error') };
-        }
-      }, [t]);
-
       const fetchUsers = useCallback(async () => {
         setLoading(true);
         try {
-          const { data: profilesData, error: profilesError } = await supabase
-            .from('user_profiles')
-            .select(`id, full_name, is_admin, subscription_plan, analyses_used`);
-
-          if (profilesError) throw profilesError;
-          
-          const usersWithAuthDetails = await Promise.all(profilesData.map(async (profile) => {
-            const authDetails = await fetchUserAuthDetails(profile.id);
-            return { ...profile, ...authDetails };
-          }));
-
-          setUsers(usersWithAuthDetails);
+            const { data: profilesData, error: profilesError } = await supabase
+                .from('user_profiles')
+                .select(`id, email, full_name, is_admin, subscription_plan, analysis_count, updated_at`); // Select only the necessary fields
+    
+            if (profilesError) throw profilesError;
+    
+            // No longer call fetchUserAuthDetails
+            setUsers(profilesData); // Set the state with the data from user_profiles directly
+    
         } catch (error) {
-          toast({ title: t('errorFetchingUsers'), description: error.message, variant: 'destructive' });
-          setUsers([]); 
+            toast({ title: t('errorFetchingUsers'), description: error.message, variant: 'destructive' });
+            setUsers([]);
         } finally {
-          setLoading(false);
+            setLoading(false);
         }
-      }, [toast, t, fetchUserAuthDetails]);
+    }, [toast, t]); // Remove fetchUserAuthDetails from the dependency array
+    
 
       useEffect(() => {
         fetchUsers();
