@@ -17,12 +17,14 @@
           <LandingPageHeader />
           <HeroSection />
           <WhatIsZooesisSection />
-          <ScreenshotsSection />
           <BenefitsSection />
+          <ScreenshotsSection />
+          
           {/* <GrowingSection /> */}
-          <PricingSection /> 
           <RegistrationSection />
-          <TrustSection />
+          <PricingSection /> 
+         
+          {/* <TrustSection />*/}
           <LandingPageFooter />
         </div>
       );

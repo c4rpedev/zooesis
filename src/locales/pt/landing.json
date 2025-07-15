@@ -1,9 +1,9 @@
 
     {
-      "landingHeroTitle": "Seu novo assistente",
-      "landingHeroTitleHighlight": "clínico veterinário",
-      "landingHeroSubtitle": "Interprete exames clínicos em segundos a partir de uma simples foto.",
-      "landingHeroCTA": "Comece grátis",
+      "landingHeroTitle": "Economize tempo interpretando análises",
+      "landingHeroTitleHighlight": "instantaneamente com IA",
+      "landingHeroSubtitle": "Menos tempo de interpretação, mais precisão em seus diagnósticos",
+      "landingHeroCTA": "Experimente o Zooesis grátis",
       "whatIsZooesisTitle": "O que é",
       "whatIsZooesisDescription1": "Zooesis é uma plataforma com IA que automatiza a interpretação de exames clínicos veterinários.",
       "whatIsZooesisStep1Title": "Envie Foto",
@@ -52,6 +52,12 @@
       "homeProfileDescription": "Gerencie as configurações e detalhes da sua conta.",
       "homeRecentActivityTitle": "Atividade Recente",
       "homeRecentActivityDescription": "Visão geral de suas últimas análises.",
-      "homeRecentActivityPlaceholder": "Suas análises recentes aparecerão aqui."
+      "homeRecentActivityPlaceholder": "Suas análises recentes aparecerão aqui.",
+      "homeRecentActivityPlaceholder": "Suas análises recentes aparecerão aqui.",
+      "termsAndConditions": "Termos e Condições",
+      "privacyPolicy": "Política de Privacidade",
+      "prices": "Preços",
+      "features": "Recursos"
+
     }
   

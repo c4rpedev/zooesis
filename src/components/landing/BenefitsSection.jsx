@@ -15,7 +15,7 @@
         { icon: CheckCircle, title: t('benefitsItem6Title'), description: t('benefitsItem6Description') }
       ];
       return (
-        <section className="py-16 md:py-24 bg-sky-50 dark:bg-slate-900">
+        <section id="features" className="py-16 md:py-24 bg-sky-50 dark:bg-slate-900">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12 md:mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-slate-800 dark:text-white mb-4">{t('benefitsTitle')} <span className="text-primary">{t('benefitsTitleHighlight')}</span></h2>

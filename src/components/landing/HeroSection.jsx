@@ -32,7 +32,7 @@ import React from 'react';
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="py-20 md:py-32 bg-cover bg-center relative overflow-hidden" // Added overflow-hidden to prevent image overflow
+          className="py-16 md:py-24 bg-cover bg-center relative overflow-hidden" // Added overflow-hidden to prevent image overflow
         >
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/10 dark:from-primary/10 dark:via-background dark:to-secondary/5"></div>
           <motion.div
