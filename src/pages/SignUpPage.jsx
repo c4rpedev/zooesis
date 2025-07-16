@@ -28,6 +28,7 @@ const countries = [
   { code: 'BR', name: 'Brazil', dialCode: '+55', flag: '🇧🇷', format: '(XX) XXXXX-XXXX' },
   { code: 'MX', name: 'Mexico', dialCode: '+52', flag: '🇲🇽', format: 'XXX XXX XXXX' },
   { code: 'AR', name: 'Argentina', dialCode: '+54', flag: '🇦🇷', format: 'XX XXXX-XXXX' },
+  { code: 'QA', name: 'Qatar', dialCode: '+974', flag: '🇶🇦', format: 'XXXX XXXX' },
   { code: 'RU', name: 'Russia', dialCode: '+7', flag: '🇷🇺', format: 'XXX XXX-XX-XX' },
   { code: 'ZA', name: 'South Africa', dialCode: '+27', flag: '🇿🇦', format: 'XX XXX XXXX' },
   { code: 'EG', name: 'Egypt', dialCode: '+20', flag: '🇪🇬', format: 'XX XXXX XXXX' },
@@ -245,6 +246,12 @@ console.log('catchError',catchError)
               <CardDescription className="text-slate-600 dark:text-slate-300 pt-1">
                 {t('joinZooesis')}
               </CardDescription>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                  {t('alreadyHaveAccount')}{' '}
+                  <Link to="/login" className="font-medium text-primary hover:underline">
+                    {t('signInHere')} <LogIn className="inline ml-1 h-4 w-4" />
+                  </Link>
+                </p>
             </CardHeader>
             <CardContent className="p-8">
               <form onSubmit={handleSignUp} className="space-y-6">
