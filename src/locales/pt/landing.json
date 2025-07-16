@@ -1,9 +1,10 @@
 
     {
-      "landingHeroTitle": "Seu novo assistente",
-      "landingHeroTitleHighlight": "clínico veterinário",
-      "landingHeroSubtitle": "Interprete exames clínicos em segundos a partir de uma simples foto.",
-      "landingHeroCTA": "Comece grátis",
+      "landingHeroTitle": "Economize tempo interpretando análises",
+      "landingHeroTitleHighlight": "instantaneamente com IA",
+      "landingHeroSubtitle": "Menos tempo de interpretação, mais precisão em seus diagnósticos",
+      "landingHeroCTA": "Experimente o Zooesis grátis",
+      "landingHeroCTAInfo": "Não é necessário cartão de crédito. Pronto em 2 minutos. Dúvidas? Email: info@zooesis.com",
       "whatIsZooesisTitle": "O que é",
       "whatIsZooesisDescription1": "Zooesis é uma plataforma com IA que automatiza a interpretação de exames clínicos veterinários.",
       "whatIsZooesisStep1Title": "Envie Foto",
@@ -34,6 +35,10 @@
       "screenshotsTitle": "Veja o",
       "screenshotsTitleSuffix": "em Ação",
       "screenshotsSubtitle": "Explore a interface intuitiva e os relatórios abrangentes do Zooesis.",
+      "feature1Title": "Selecione a análise, carregue a imagem e deixe o Zooesis cuidar do resto",
+ "feature1Description": "Com o Zooesis, fazer interpretações clínicas é mais fácil do que nunca. Basta selecionar o tipo de análise, carregar uma foto dos resultados do laboratório e deixar que nossa IA gere instantaneamente um relatório detalhado e profissional, economizando tempo e reduzindo erros humanos.",
+ "feature2Title": "Relatórios clínicos automatizados prontos para imprimir ou compartilhar.",
+ "feature2Description": "Gera automaticamente relatórios clínicos completos que estão prontos para imprimir ou compartilhar com apenas um clique. Entregue resultados claros e profissionais aos seus clientes mais rapidamente, sem formatação ou edição manual, e com a confiança de uma interpretação consistente impulsionada por IA.",
       "altDashboardScreenshot": "Captura de tela do Painel do Zooesis",
       "altReportScreenshot": "Captura de tela de um Relatório do Zooesis",
       "screenshotsCallToAction": "Pronto para simplificar seu fluxo de trabalho clínico?",
@@ -52,6 +57,12 @@
       "homeProfileDescription": "Gerencie as configurações e detalhes da sua conta.",
       "homeRecentActivityTitle": "Atividade Recente",
       "homeRecentActivityDescription": "Visão geral de suas últimas análises.",
-      "homeRecentActivityPlaceholder": "Suas análises recentes aparecerão aqui."
+      "homeRecentActivityPlaceholder": "Suas análises recentes aparecerão aqui.",
+      "homeRecentActivityPlaceholder": "Suas análises recentes aparecerão aqui.",
+      "termsAndConditions": "Termos e Condições",
+      "privacyPolicy": "Política de Privacidade",
+      "prices": "Preços",
+      "features": "Recursos"
+
     }
   
